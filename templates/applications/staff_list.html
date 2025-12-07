@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications - Staff Panel{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-list-check"></i> Applications</h2>
+    <div>
+        <form method="get" class="d-inline">
+            <select name="status" class="form-select d-inline-block" style="width: auto;" onchange="this.form.submit()">
+                <option value="">All Statuses</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if current_filter == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>University</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td>{{ app.full_name }}</td>
+                        <td>{{ app.user.email }}</td>
+                        <td>{{ app.university }}</td>
+                        <td>{{ app.course }}</td>
+                        <td>
+                            <span class="status-badge status-{{ app.status }}">
+                                {{ app.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if app.payment %}
+                                {% if app.payment.is_confirmed %}
+                                    <span class="badge bg-success">Confirmed</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Pending</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge bg-secondary">No Payment</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ app.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'applications:staff_detail' app.pk %}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No applications found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

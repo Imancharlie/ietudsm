@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - IET Membership{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-person-circle"></i> My Profile
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if application %}
+                    <h5>Personal Information</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Full Name:</strong></div>
+                        <div class="col-md-8">{{ application.full_name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Email:</strong></div>
+                        <div class="col-md-8">{{ application.email }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Phone Number:</strong></div>
+                        <div class="col-md-8">{{ application.phone_number }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Date of Birth:</strong></div>
+                        <div class="col-md-8">{{ application.date_of_birth|date:"F d, Y" }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Age:</strong></div>
+                        <div class="col-md-8">{{ application.age }} years</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Nationality:</strong></div>
+                        <div class="col-md-8">{{ application.nationality }}</div>
+                    </div>
+
+                    <h5 class="mt-4">Address</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Address:</strong></div>
+                        <div class="col-md-8">{{ application.address }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>City:</strong></div>
+                        <div class="col-md-8">{{ application.city }}</div>
+                    </div>
+
+                    <h5 class="mt-4">Academic Information</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>University:</strong></div>
+                        <div class="col-md-8">{{ application.university }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Department:</strong></div>
+                        <div class="col-md-8">{{ application.department }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Course:</strong></div>
+                        <div class="col-md-8">{{ application.course }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Year of Study:</strong></div>
+                        <div class="col-md-8">Year {{ application.year_of_study }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Date of Admission:</strong></div>
+                        <div class="col-md-8">{{ application.admission_date_formatted }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Expected Graduation:</strong></div>
+                        <div class="col-md-8">{{ application.year_of_graduation }}</div>
+                    </div>
+
+                    <h5 class="mt-4">Membership Status</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Status:</strong></div>
+                        <div class="col-md-8">
+                            <span class="status-badge status-{{ application.status }}">
+                                {{ application.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4"><strong>Member Since:</strong></div>
+                        <div class="col-md-8">{{ application.created_at|date:"F d, Y" }}</div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p>You haven't completed your application yet.</p>
+                        <a href="{% url 'applications:create' %}" class="btn btn-primary">
+                            Complete Application
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Announcements{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-megaphone"></i> Announcements</h2>
+    {% if user.is_staff %}
+        <a href="{% url 'announcements:create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create Announcement
+        </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for announcement in announcements %}
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">{{ announcement.title }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ announcement.content }}</p>
+                <small class="text-muted">
+                    Posted by {{ announcement.created_by.get_full_name|default:announcement.created_by.email }} 
+                    on {{ announcement.created_at|date:"F d, Y" }}
+                </small>
+            </div>
+            {% if user.is_staff %}
+            <div class="card-footer">
+                <a href="{% url 'announcements:update' announcement.pk %}" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a href="{% url 'announcements:delete' announcement.pk %}" class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            <p class="mb-0">No announcements available at the moment.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+

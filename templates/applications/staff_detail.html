@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Application Details - Staff Panel{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'applications:staff_list' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Application Details</h4>
+            </div>
+            <div class="card-body">
+                <h5>Personal Information</h5>
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Name:</strong></div>
+                    <div class="col-md-8">{{ application.full_name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Email:</strong></div>
+                    <div class="col-md-8">{{ application.email }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Phone Number:</strong></div>
+                    <div class="col-md-8">{{ application.phone_number }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Date of Birth:</strong></div>
+                    <div class="col-md-8">{{ application.date_of_birth|date:"F d, Y" }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Age:</strong></div>
+                    <div class="col-md-8">{{ application.age }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Nationality:</strong></div>
+                    <div class="col-md-8">{{ application.nationality }}</div>
+                </div>
+
+                <h5 class="mt-4">Address</h5>
+                <hr>
+                <p>{{ application.address }}<br>
+                {{ application.city }}</p>
+
+                <h5 class="mt-4">Academic Information</h5>
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>University:</strong></div>
+                    <div class="col-md-8">{{ application.university }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Department:</strong></div>
+                    <div class="col-md-8">{{ application.department }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Course:</strong></div>
+                    <div class="col-md-8">{{ application.course }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Year of Study:</strong></div>
+                    <div class="col-md-8">Year {{ application.year_of_study }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"><strong>Date of Admission:</strong></div>
+                    <div class="col-md-8">{{ application.admission_date_formatted }}</div>
+                </div>
+
+                <h5 class="mt-4">Status</h5>
+                <hr>
+                <span class="status-badge status-{{ application.status }}">
+                    {{ application.get_status_display }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">Payment Information</h5>
+            </div>
+            <div class="card-body">
+                {% if payment %}
+                    <p><strong>Reference:</strong> <code>{{ payment.reference_number }}</code></p>
+                    <p><strong>Status:</strong> 
+                        {% if payment.is_rejected %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% elif payment.is_confirmed %}
+                            <span class="badge bg-success">Confirmed</span>
+                        {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% endif %}
+                    </p>
+                    {% if payment.wakala_number %}
+                        <hr>
+                        <p class="mb-1"><strong>Payment Proof:</strong></p>
+                        <p class="mb-1"><small>Wakala Number:</small> <code>{{ payment.wakala_number }}</code></p>
+                        <p class="mb-0"><small>Sender Name:</small> {{ payment.sender_name }}</p>
+                    {% endif %}
+                    {% if payment.is_rejected %}
+                        <p><strong>Rejection Reason:</strong> {{ payment.rejection_reason }}</p>
+                    {% elif payment.is_confirmed %}
+                        <p><strong>Confirmed by:</strong> {{ payment.confirmed_by.get_full_name|default:payment.confirmed_by.email }}</p>
+                        <p><strong>Confirmed at:</strong> {{ payment.confirmed_at|date:"M d, Y H:i" }}</p>
+                    {% else %}
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'payments:confirm' payment.pk %}" class="btn btn-success btn-sm">
+                                <i class="bi bi-check-circle"></i> Confirm Payment
+                            </a>
+                            <a href="{% url 'payments:reject' payment.pk %}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-x-circle"></i> Reject Payment
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p class="text-muted">No payment information available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'exports:application_form' application.pk %}" class="btn btn-primary btn-sm w-100 mb-2">
+                    <i class="bi bi-file-pdf"></i> Export as PDF
+                </a>
+                
+                {% if application.status == 'payment_confirmed' or application.status == 'under_review' %}
+                    <form method="post" action="{% url 'certificates:update_processing' application.pk %}" class="mb-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info btn-sm w-100">
+                            <i class="bi bi-gear"></i> Mark as Processing
+                        </button>
+                    </form>
+                {% endif %}
+                
+                {% if application.status == 'certificate_processing' %}
+                    <a href="{% url 'certificates:mark_ready' application.pk %}" class="btn btn-success btn-sm w-100">
+                        <i class="bi bi-award"></i> Mark Certificate Ready
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

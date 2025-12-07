@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome - IET Membership System{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Carousel optimizations for mobile */
+    .highlights-carousel {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .carousel-item {
+        height: 400px;
+        background: #f8f9fa;
+    }
+    
+    .carousel-item img {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .carousel-caption {
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5rem 1rem;
+        border-radius: 0;
+    }
+    
+    .carousel-caption h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .carousel-caption p {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 576px) {
+        .carousel-item {
+            height: 300px;
+        }
+        
+        .carousel-caption {
+            padding: 1rem 0.75rem;
+        }
+        
+        .carousel-caption h5 {
+            font-size: 0.95rem;
+        }
+        
+        .carousel-caption p {
+            font-size: 0.8rem;
+        }
+    }
+    
+    /* Control buttons */
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 8%;
+        opacity: 0.7;
+    }
+    
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        opacity: 1;
+    }
+    
+    /* Indicators */
+    .carousel-indicators [data-bs-target] {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-4">
+          <h1 class="display-4 fw-bold text-primary">
+                Institution of Engineers Tanzania
+            </h1>
+            
+        </div>
+
+        <!-- Highlights Carousel -->
+        <div id="highlightsCarousel" class="carousel slide highlights-carousel mb-5" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="IET Workshop">
+                    <div class="carousel-caption">
+                        <h5>Hands-On Workshops</h5>
+                        <p>Participate in practical engineering workshops and gain real-world experience</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'highlights/seminar.jpg' %}" class="d-block w-100" alt="IET Seminar">
+                    <div class="carousel-caption">
+                        <h5>Industry Seminars</h5>
+                        <p>Learn from industry experts and stay updated with latest engineering trends</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'highlights/conference.jpg' %}" class="d-block w-100" alt="IET Conference">
+                    <div class="carousel-caption">
+                        <h5>Professional Conferences</h5>
+                        <p>Connect with fellow engineers and build lasting professional relationships</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'highlights/industrial visit.jpg' %}" class="d-block w-100" alt="Industrial Visit">
+                    <div class="carousel-caption">
+                        <h5>Industrial Visits</h5>
+                        <p>Experience real-world engineering applications through organized industrial visits</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-5">
+                <h2 class="card-title mb-4">About IET UDSM</h2>
+                <p class="card-text">
+                    The Institution of Engineers Tanzania (IET) is a professional body for engineers 
+                    in Tanzania. We provide a platform for engineering students and professionals to 
+                    connect, learn, and grow together.
+                </p>
+                
+                <h3 class="mt-4 mb-3">Why Join IET?</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="bi bi-award-fill text-primary" style="font-size: 3rem;"></i>
+                            <h5 class="mt-2">Professional Certification</h5>
+                            <p>Get recognized for your engineering expertise</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                            <h5 class="mt-2">Networking</h5>
+                            <p>Connect with fellow engineers and professionals</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="bi bi-lightbulb-fill text-primary" style="font-size: 3rem;"></i>
+                            <h5 class="mt-2">Workshops & Seminars</h5>
+                            <p>Opportunities to attend practical workshops and seminars for hands-on experience and industry exposure</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-person-plus"></i> Apply for Membership
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-info-circle"></i> Membership Process</h5>
+                        <ol class="list-group list-group-numbered">
+                            <li class="list-group-item">Create an account</li>
+                            <li class="list-group-item">Fill out the application form</li>
+                            <li class="list-group-item">Pay the registration fee</li>
+                            <li class="list-group-item">Wait for approval</li>
+                            <li class="list-group-item">Receive your certificate</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="bi bi-question-circle"></i> Contact Us</h5>
+                        <p>If you have any questions about the membership process, feel free to reach out to us.</p>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                            <div>
+                                <strong>Location:</strong><br>
+                                <small>University of Dar es Salaam, CoET</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-envelope-fill text-primary me-2"></i>
+                            <div>
+                                <strong>Email:</strong><br>
+                                <a href="mailto:udsmiet@gmail.com" class="text-decoration-none">udsmiet@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-telephone-fill text-primary me-2"></i>
+                            <div>
+                                <strong>Phone:</strong><br>
+                                <a href="tel:+255716657659" class="text-decoration-none">+255 716 657 659</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

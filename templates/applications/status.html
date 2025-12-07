@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}Application Progress - IET Membership{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Compact card styling */
+    .status-card {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .status-card .card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .status-card .card-header h4 {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .status-card .card-body {
+        padding: 1.25rem;
+    }
+    
+    /* Progress step styling */
+    .progress-step {
+        position: relative;
+        padding-left: 2.5rem;
+        padding-bottom: 1.25rem;
+        border-left: 2px solid #e0e0e0;
+    }
+    
+    .progress-step:last-child {
+        border-left: none;
+        padding-bottom: 0;
+    }
+    
+    .progress-step.active {
+        border-left-color: var(--iet-primary);
+    }
+    
+    .progress-step.completed {
+        border-left-color: #28a745;
+    }
+    
+    /* Fade pending steps */
+    .progress-step.pending {
+        opacity: 0.4;
+    }
+    
+    .progress-step.pending h5,
+    .progress-step.pending p {
+        color: #999 !important;
+    }
+    
+    /* Progress icon */
+    .progress-icon {
+        position: absolute;
+        left: -1rem;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e0e0e0;
+        color: white;
+        font-size: 0.9rem;
+    }
+    
+    .progress-step.active .progress-icon {
+        background: var(--iet-primary);
+        animation: pulse 2s infinite;
+    }
+    
+    .progress-step.completed .progress-icon {
+        background: #28a745;
+    }
+    
+    /* Step titles and text - smaller */
+    .progress-step h5 {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+    
+    .progress-step p {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+    
+    /* Clickable rejected payment link */
+    .payment-rejected-link {
+        display: inline-block;
+        color: #dc3545;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .payment-rejected-link:hover {
+        color: #c82333;
+        text-decoration: underline;
+        transform: translateX(5px);
+    }
+    
+    .payment-rejected-link i {
+        transition: transform 0.3s ease;
+    }
+    
+    .payment-rejected-link:hover i {
+        transform: rotate(90deg);
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    
+    /* Compact contact card */
+    .contact-card {
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        color: white;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        box-shadow: 0 3px 12px var(--iet-shadow);
+    }
+    
+    .contact-card h5 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-card p {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .contact-card .btn {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12">
+        {% if application %}
+            <!-- Progress Tracker -->
+            <div class="card shadow mb-3 status-card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-diagram-3"></i> Application Progress</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Step 1: Application Submitted -->
+                    <div class="progress-step {% if application.status == 'submitted' %}active{% elif application.status != 'draft' %}completed{% else %}pending{% endif %}">
+                        <div class="progress-icon">
+                            <i class="bi bi-send-fill"></i>
+                        </div>
+                        <h5>Application Submitted</h5>
+                        <p class="text-muted mb-0">Your application has been received</p>
+                    </div>
+
+                    <!-- Step 2: Payment Verification -->
+                    <div class="progress-step {% if application.status == 'submitted' and not payment.is_confirmed %}active{% elif payment.is_confirmed %}completed{% elif application.status == 'draft' %}pending{% endif %}">
+                        <div class="progress-icon">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                        <h5>Payment Verification</h5>
+                        {% if payment.is_confirmed %}
+                            <p class="text-success mb-0"><i class="bi bi-check-circle-fill"></i> Payment Confirmed</p>
+                        {% elif payment.is_rejected %}
+                            <a href="{% url 'applications:preview' %}" class="payment-rejected-link">
+                                <i class="bi bi-x-circle-fill"></i> Payment Rejected - Click to Resubmit
+                            </a>
+                            <br><small class="text-danger">Reason: {{ payment.rejection_reason }}</small>
+                        {% else %}
+                            <p class="text-warning mb-0"><i class="bi bi-clock-fill"></i> Awaiting Confirmation</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Step 3: Under Review -->
+                    <div class="progress-step {% if application.status == 'payment_confirmed' or application.status == 'under_review' %}active{% elif application.status in 'certificate_processing,completed' %}completed{% else %}pending{% endif %}">
+                        <div class="progress-icon">
+                            <i class="bi bi-file-earmark-check"></i>
+                        </div>
+                        <h5>Under Review</h5>
+                        <p class="text-muted mb-0">Application being processed</p>
+                    </div>
+
+                    <!-- Step 4: Certificate Ready -->
+                    <div class="progress-step {% if application.status == 'certificate_processing' %}active{% elif application.status == 'completed' %}completed{% else %}pending{% endif %}">
+                        <div class="progress-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <h5>Certificate Ready</h5>
+                        {% if application.status == 'completed' %}
+                            <p class="text-success mb-0"><i class="bi bi-check-circle-fill"></i> Certificate Available</p>
+                        {% else %}
+                            <p class="text-muted mb-0">Pending</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="card shadow status-card">
+                <div class="card-body">
+                    <div class="contact-card">
+                        <h5><i class="bi bi-headset"></i> Need Assistance?</h5>
+                        <p>
+                            {% if not payment.is_confirmed %}
+                                Contact the <strong>Treasurer</strong> for payment inquiries
+                            {% else %}
+                                Contact your <strong>Program Coordinator</strong>
+                            {% endif %}
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex">
+                            {% if not payment.is_confirmed %}
+                                <a href="https://wa.me/{{ treasurer_whatsapp|slice:'1:' }}" target="_blank" class="btn btn-light btn-sm">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="tel:{{ treasurer_whatsapp }}" class="btn btn-outline-light btn-sm">
+                                    <i class="bi bi-telephone-fill"></i> Call
+                                </a>
+                            {% else %}
+                                <a href="https://wa.me/{{ coordinator_whatsapp|slice:'1:' }}" target="_blank" class="btn btn-light btn-sm">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="tel:{{ coordinator_whatsapp }}" class="btn btn-outline-light btn-sm">
+                                    <i class="bi bi-telephone-fill"></i> Call
+                                </a>
+                            {% endif %}
+                        </div>
+                        <p class="mt-2 mb-0"><small>Ref: <code style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.4rem; border-radius: 0.25rem;">{{ payment.reference_number }}</code></small></p>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-person-circle"></i> View Full Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>No application found. Please <a href="{% url 'applications:create' %}">create an application</a> first.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

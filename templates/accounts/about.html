@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - IET{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-info-circle"></i> About IET
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <img src="{% static 'images.jpeg' %}" alt="IET Logo" style="width: 120px; height: 120px;">
+                </div>
+                <h4 class="text-center">Institution of Engineers Tanzania (IET)</h4>
+                <p class="lead text-center">University of Dar es Salaam Chapter</p>
+                
+                <hr>
+                
+                <h5 class="mt-4">Our Mission</h5>
+                <p>
+                    The Institution of Engineering and Technology (IET) at the University of Dar es Salaam 
+                    is dedicated to inspiring, informing, and influencing the global engineering and technology 
+                    community to engineer a better world.
+                </p>
+                
+                <h5 class="mt-4">What We Do</h5>
+                <ul>
+                    <li>Provide professional development opportunities for engineering students</li>
+                    <li>Organize technical workshops, seminars, and conferences</li>
+                    <li>Foster networking among students, faculty, and industry professionals</li>
+                    <li>Promote innovation and research in engineering and technology</li>
+                    <li>Support career development and job placement</li>
+                    <li>Encourage community service through engineering projects</li>
+                </ul>
+                
+                <h5 class="mt-4">Membership Benefits</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Access to exclusive workshops and training</li>
+                            <li>Networking opportunities</li>
+                            <li>Professional certification</li>
+                            <li>Career guidance and mentorship</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Access to technical resources</li>
+                            <li>Industry connections</li>
+                            <li>Leadership development</li>
+                            <li>Community engagement projects</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">Contact Information</h5>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <p class="mb-2"><strong><i class="bi bi-geo-alt"></i> Location:</strong> University of Dar es Salaam, College of Engineering and Technology</p>
+                        <p class="mb-2"><strong><i class="bi bi-envelope"></i> Email:</strong> <a href="mailto:udsmiet@gmail.com">udsmiet@gmail.com</a></p>
+                        <p class="mb-0"><strong><i class="bi bi-telephone"></i> Phone:</strong> <a href="tel:+255716657659">+255 716 657 659</a></p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-person-plus"></i> Join IET Today
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

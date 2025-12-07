@@ -1,0 +1,166 @@
+═══════════════════════════════════════════════════════════════════════════════
+  COMPLETE TEMPLATE VARIABLES REFERENCE
+  For: application_template.docx
+═══════════════════════════════════════════════════════════════════════════════
+
+📍 FILE LOCATION: templates/exports/application_template.docx
+
+═══════════════════════════════════════════════════════════════════════════════
+  ALL AVAILABLE VARIABLES
+═══════════════════════════════════════════════════════════════════════════════
+
+PERSONAL INFORMATION
+────────────────────────────────────────────────────────────────────────────
+{{ first_name }}            First name only
+{{ middle_name }}           Middle name (may be empty)
+{{ last_name }}             Last name only
+{{ full_name }}             Complete name (First Middle Last)
+{{ email }}                 Email address
+{{ phone_number }}          Phone number (e.g., +255 712 345 678) ⭐ NEW
+{{ nationality }}           Nationality (default: Tanzanian)
+{{ date_of_birth }}         Date of birth (DD/MM/YYYY format)
+{{ age }}                   Age in years (auto-calculated)
+
+ADDRESS
+────────────────────────────────────────────────────────────────────────────
+{{ address }}               Street address
+{{ city }}                  City name
+
+ACADEMIC INFORMATION
+────────────────────────────────────────────────────────────────────────────
+{{ university }}            University of Dar es Salaam
+{{ department }}            Department (auto-determined from course)
+{{ course }}                Full course name (e.g., BSc Electrical Engineering)
+{{ year_of_study }}         Year 1, Year 2, Year 3, or Year 4 ⭐ UPDATED
+{{ date_of_admission }}     Nov/YYYY format (e.g., Nov/2023) ⭐ NEW
+{{ year_of_graduation }}    Expected graduation year (auto-calculated)
+
+APPLICATION DETAILS
+────────────────────────────────────────────────────────────────────────────
+{{ application_date }}      Date application was submitted (DD/MM/YYYY)
+{{ status }}                Current status (e.g., "Payment Confirmed")
+{{ reference_number }}      Payment reference number
+
+═══════════════════════════════════════════════════════════════════════════════
+  EXAMPLE TEMPLATE LAYOUT
+═══════════════════════════════════════════════════════════════════════════════
+
+INSTITUTION OF ENGINEERING AND TECHNOLOGY (IET)
+MEMBERSHIP APPLICATION FORM
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PERSONAL INFORMATION
+
+Full Name:              {{ full_name }}
+Date of Birth:          {{ date_of_birth }}
+Age:                    {{ age }} years
+Nationality:            {{ nationality }}
+
+CONTACT INFORMATION
+
+Email:                  {{ email }}
+Phone Number:           {{ phone_number }}
+
+Address:                {{ address }}
+City:                   {{ city }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ACADEMIC INFORMATION
+
+University:             {{ university }}
+Department:             {{ department }}
+Course:                 {{ course }}
+Year of Study:          {{ year_of_study }}
+Date of Admission:      {{ date_of_admission }}
+Expected Graduation:    {{ year_of_graduation }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+APPLICATION DETAILS
+
+Application Date:       {{ application_date }}
+Reference Number:       {{ reference_number }}
+Status:                 {{ status }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+═══════════════════════════════════════════════════════════════════════════════
+  RECENT CHANGES (December 7, 2025)
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ ADDED:
+   - {{ phone_number }}         Phone number field
+   - {{ date_of_admission }}    Date of admission (Nov/YYYY format)
+
+✅ UPDATED:
+   - {{ year_of_study }}        Now shows "Year 1", "Year 2", "Year 3", "Year 4"
+                                (instead of "First Year", "Second Year", etc.)
+
+❌ REMOVED:
+   - {{ postal_code }}          No longer collected
+
+═══════════════════════════════════════════════════════════════════════════════
+  VARIABLE FORMAT EXAMPLES
+═══════════════════════════════════════════════════════════════════════════════
+
+{{ full_name }}              → "John Michael Doe"
+{{ email }}                  → "john.doe@example.com"
+{{ phone_number }}           → "+255 712 345 678"
+{{ date_of_birth }}          → "15/03/2002"
+{{ age }}                    → "22"
+{{ nationality }}            → "Tanzanian"
+{{ address }}                → "123 Main Street, Kinondoni"
+{{ city }}                   → "Dar es Salaam"
+{{ university }}             → "University of Dar es Salaam"
+{{ department }}             → "Electrical Engineering Department"
+{{ course }}                 → "BSc Electrical Engineering"
+{{ year_of_study }}          → "Year 2"
+{{ date_of_admission }}      → "Nov/2023"
+{{ year_of_graduation }}     → "2027"
+{{ application_date }}       → "07/12/2025"
+{{ reference_number }}       → "IET-2025-001234"
+{{ status }}                 → "Payment Confirmed"
+
+═══════════════════════════════════════════════════════════════════════════════
+  TIPS FOR TEMPLATE DESIGN
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Use double curly braces: {{ variable_name }}
+2. Variables are case-sensitive
+3. You can format text around variables (bold, italic, colors, etc.)
+4. Use tables for better layout
+5. Add your organization logo/header
+6. Include signature lines if needed
+7. Test with real data after updating
+
+═══════════════════════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ Variable shows as blank in PDF
+   → Check spelling (case-sensitive)
+   → Make sure you used {{ }} not { } or [[ ]]
+   → Verify the field has data in the application
+
+❌ Old format still appears
+   → Save the Word template
+   → Close Microsoft Word completely
+   → Delete temp_*.docx files from project root
+   → Try exporting again
+
+❌ PDF export fails
+   → Check that application_template.docx exists
+   → Verify Microsoft Word is installed
+   → Close any open Word documents
+   → Check file permissions
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Last Updated: December 7, 2025
+System Version: Django 4.2.7
+Template Engine: python-docx-template
+
+═══════════════════════════════════════════════════════════════════════════════
+

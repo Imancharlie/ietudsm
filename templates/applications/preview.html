@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Payment & Submission - IET Membership{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Compact, mobile-friendly layout */
+    .preview-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    /* Info alert styling - softer, more polite */
+    .info-notice {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 4px solid #2196f3;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .info-notice h6 {
+        color: #1976d2;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+    
+    .info-notice p {
+        color: #424242;
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+    
+    /* Payment method card */
+    .payment-method {
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 3px 12px var(--iet-shadow);
+    }
+    
+    .payment-method h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .payment-method .amount {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .payment-method hr {
+        border-color: rgba(255,255,255,0.3);
+        margin: 0.75rem 0;
+    }
+    
+    .payment-method h5 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Step cards - compact */
+    .step-card {
+        border-left: 3px solid var(--iet-primary);
+        margin-bottom: 1rem;
+    }
+    
+    .step-card .card-body {
+        padding: 1rem;
+    }
+    
+    .step-card h4 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .step-number {
+        color: var(--iet-primary);
+    }
+    
+    /* Form elements - mobile friendly */
+    .form-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .form-control-lg {
+        font-size: 1rem;
+        padding: 0.6rem 0.85rem;
+    }
+    
+    small.text-muted {
+        font-size: 0.8rem;
+    }
+    
+    /* Custom checkbox styling */
+    .form-check {
+        background: var(--iet-secondary-light);
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        border: 2px solid var(--iet-primary);
+    }
+    
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid var(--iet-primary);
+        cursor: pointer;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--iet-primary);
+        border-color: var(--iet-primary);
+    }
+    
+    .form-check-input:focus {
+        border-color: var(--iet-primary);
+        box-shadow: 0 0 0 0.25rem rgba(195, 107, 133, 0.25);
+    }
+    
+    .form-check-label {
+        margin-left: 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    
+    /* Buttons - consistent sizing */
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.6rem 1.25rem;
+    }
+    
+    /* Help section - compact */
+    .help-card {
+        padding: 1rem;
+    }
+    
+    .help-card h5 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .help-card p {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 576px) {
+        .payment-method h3 {
+            font-size: 1rem;
+        }
+        
+        .payment-method .amount {
+            font-size: 1.25rem;
+        }
+        
+        .step-card h4 {
+            font-size: 0.95rem;
+        }
+        
+        .form-check-label {
+            font-size: 0.85rem;
+        }
+        
+        .btn {
+            font-size: 0.85rem;
+            padding: 0.45rem 0.85rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="preview-container">
+    <!-- Polite Information Notice -->
+    <div class="info-notice">
+        <h6><i class="bi bi-info-circle"></i> Payment Confirmation Required</h6>
+        <p>Please complete your payment and submit the details below. Your application will be reviewed by our staff once payment is confirmed.</p>
+    </div>
+
+    <!-- Step 1: Payment Methods -->
+    <div class="card shadow mb-3 step-card">
+        <div class="card-body">
+            <h4><i class="bi bi-1-circle-fill step-number"></i> Make Payment</h4>
+            
+            <div class="payment-method text-center">
+                <h3><i class="bi bi-phone"></i> LIPA NAMBA</h3>
+                <div class="amount">{{ lipa_namba }}</div>
+                <p class="mb-2">{{ lipa_namba_name }}</p>
+                <hr>
+                <h5>OR Send Money Directly</h5>
+                <div class="amount">{{ treasurer_whatsapp }}</div>
+            </div>
+
+            <div class="text-center mt-3">
+                <h5 style="color: var(--iet-primary); font-size: 1.1rem;">Amount: {{ registration_fee|floatformat:0 }} TZS</h5>
+                <p class="text-muted mb-0" style="font-size: 0.85rem;">Reference: <code>{{ payment.reference_number }}</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Submit Payment Details -->
+    <div class="card shadow mb-3 step-card">
+        <div class="card-body">
+            <h4><i class="bi bi-2-circle-fill step-number"></i> Enter Payment Details</h4>
+            
+            <form method="post" id="paymentForm">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Sender Name or Phone Number</label>
+                    <input type="text" name="sender_name" class="form-control" 
+                           placeholder="Enter name or phone number from receipt" 
+                           value="{{ payment.sender_name|default:'' }}" required>
+                    <small class="text-muted">Jina au namba ya simu iliyotumia malipo</small>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirmPayment" required>
+                    <label class="form-check-label" for="confirmPayment">
+                        I confirm that I have paid {{ registration_fee|floatformat:0 }} TZS and the information provided is accurate.
+                    </label>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" name="submit_proof" class="btn btn-primary btn-lg" id="submitBtn" disabled>
+                        <i class="bi bi-send-fill"></i> Submit Application
+                    </button>
+                    <button type="submit" name="edit_application" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil"></i> Edit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="card shadow">
+        <div class="card-body text-center help-card">
+            <h5><i class="bi bi-whatsapp"></i> Need Help?</h5>
+            <p>Contact the Treasurer for assistance</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="https://wa.me/{{ treasurer_whatsapp|slice:'1:' }}" target="_blank" class="btn btn-success btn-sm">
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </a>
+                <a href="tel:{{ treasurer_whatsapp }}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-telephone-fill"></i> Call
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('confirmPayment').addEventListener('change', function() {
+    document.getElementById('submitBtn').disabled = !this.checked;
+});
+</script>
+{% endblock %}
+
+
+
+

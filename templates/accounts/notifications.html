@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications - IET{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-bell"></i> Notifications
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if notifications %}
+                    {% for notification in notifications %}
+                        <div class="card mb-3 {% if not notification.is_read %}border-primary{% endif %}">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    {% if notification.notification_type == 'payment_confirmed' %}
+                                        <i class="bi bi-check-circle text-success"></i>
+                                    {% elif notification.notification_type == 'payment_rejected' %}
+                                        <i class="bi bi-x-circle text-danger"></i>
+                                    {% elif notification.notification_type == 'certificate_ready' %}
+                                        <i class="bi bi-award text-warning"></i>
+                                    {% else %}
+                                        <i class="bi bi-info-circle text-info"></i>
+                                    {% endif %}
+                                    {{ notification.title }}
+                                </h6>
+                                <p class="card-text">{{ notification.message }}</p>
+                                <small class="text-muted">
+                                    <i class="bi bi-clock"></i> {{ notification.created_at|date:"F d, Y - H:i" }}
+                                </small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-bell-slash" style="font-size: 3rem;"></i>
+                        <p class="mt-3">No notifications yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+

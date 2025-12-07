@@ -1,0 +1,109 @@
+═══════════════════════════════════════════════════════════════════════════════
+  WORD TEMPLATE UPDATE GUIDE - Quick Reference
+═══════════════════════════════════════════════════════════════════════════════
+
+📍 FILE LOCATION:
+   templates/exports/application_template.docx
+
+⚠️  IMPORTANT: Close Microsoft Word completely before testing exports!
+
+═══════════════════════════════════════════════════════════════════════════════
+  STEP-BY-STEP INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open application_template.docx in Microsoft Word
+
+2. Find the Personal Information section
+
+3. ADD this line (after Email or before Date of Birth):
+   
+   Phone Number: {{ phone_number }}
+
+4. REMOVE any lines containing:
+   
+   {{ postal_code }}
+
+5. Save the file (Ctrl + S)
+
+6. Close Microsoft Word completely
+
+7. Test by exporting an application from the staff panel
+
+═══════════════════════════════════════════════════════════════════════════════
+  EXAMPLE LAYOUT
+═══════════════════════════════════════════════════════════════════════════════
+
+PERSONAL INFORMATION
+────────────────────────────────────────────────────────────────────────────
+Name:               {{ full_name }}
+Email:              {{ email }}
+Phone Number:       {{ phone_number }}          ← ADD THIS LINE
+Date of Birth:      {{ date_of_birth }}
+Age:                {{ age }} years
+Nationality:        {{ nationality }}
+
+ADDRESS
+────────────────────────────────────────────────────────────────────────────
+{{ address }}
+{{ city }}
+                                                 ← REMOVE postal_code line
+
+ACADEMIC INFORMATION
+────────────────────────────────────────────────────────────────────────────
+University:         {{ university }}
+Department:         {{ department }}
+Course:             {{ course }}
+Year of Study:      {{ year_of_study }}
+Expected Year of Graduation: {{ year_of_graduation }}
+
+APPLICATION DETAILS
+────────────────────────────────────────────────────────────────────────────
+Application Date:   {{ application_date }}
+Reference Number:   {{ reference_number }}
+
+═══════════════════════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ Problem: Still seeing old format after updating template
+✅ Solution: 
+   - Make sure you saved the file
+   - Close Microsoft Word COMPLETELY
+   - Delete any temp_*.docx files in the project root
+   - Try exporting again
+
+❌ Problem: Phone number shows as blank in PDF
+✅ Solution:
+   - Make sure you typed {{ phone_number }} correctly (with double braces)
+   - Check that existing applications have phone numbers entered
+   - New applications must fill in the phone number field
+
+❌ Problem: Export fails or shows error
+✅ Solution:
+   - Check that application_template.docx exists in templates/exports/
+   - Make sure Microsoft Word is installed
+   - Close any open Word documents
+   - Check file permissions
+
+═══════════════════════════════════════════════════════════════════════════════
+  TESTING
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Create a test application with a phone number
+2. Go to Staff Panel → Applications
+3. Click on an application
+4. Click "Export as PDF"
+5. Open the PDF and verify:
+   ✓ Phone number appears in Personal Information
+   ✓ Postal code does NOT appear anywhere
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ ALL CODE CHANGES ARE COMPLETE
+✅ DATABASE MIGRATION APPLIED
+✅ SYSTEM IS READY
+
+Just update the Word template and you're done! 🎉
+
+═══════════════════════════════════════════════════════════════════════════════
+

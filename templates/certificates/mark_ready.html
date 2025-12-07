@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Mark Certificate Ready - Staff Panel{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-award"></i> Mark Certificate as Ready
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5>Application Details</h5>
+                    <p><strong>Applicant:</strong> {{ application.full_name }}</p>
+                    <p><strong>Email:</strong> {{ application.user.email }}</p>
+                    {% if certificate.certificate_number %}
+                        <p><strong>Certificate Number:</strong> <code>{{ certificate.certificate_number }}</code></p>
+                    {% endif %}
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-info-circle"></i> 
+                        Marking the certificate as ready will notify the applicant that they can collect their certificate.
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-award"></i> Mark Certificate as Ready
+                        </button>
+                        <a href="{% url 'applications:staff_detail' application.pk %}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

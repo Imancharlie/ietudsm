@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - IET Membership{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="bi bi-speedometer2"></i> Welcome, Eng. {{ application.last_name|default:user.last_name }}!</h2>
+        {% if certificate and certificate.is_ready %}
+            <p class="text-success fw-bold"><i class="bi bi-award-fill"></i> You are now a certified member of IET-UDSM!</p>
+        {% else %}
+            <p class="text-muted">You are now an approved member of IET.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% if certificate and certificate.is_ready %}
+<div class="alert alert-success alert-dismissible fade show" role="alert" id="certificateAlert">
+    <h5><i class="bi bi-award"></i> Certificate Ready!</h5>
+    <p class="mb-0">Your certificate is ready! Please come and collect your certificate from Room A11.</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Certificate Status</h5>
+            </div>
+            <div class="card-body">
+                {% if application %}
+                    <div class="mb-3">
+                        <p class="mb-2">
+                            <strong>Status:</strong> 
+                            {% if application.status == 'completed' %}
+                                <span class="badge bg-success">Ready for Collection</span>
+                            {% elif application.status == 'certificate_processing' %}
+                                <span class="badge bg-warning text-dark">Processing</span>
+                            {% else %}
+                                <span class="badge bg-info">Under Review</span>
+                            {% endif %}
+                        </p>
+                        <p class="text-muted small mb-0">
+                            {% if application.status == 'completed' %}
+                                Collect from Room A11 near CoET stationery
+                            {% elif application.status == 'certificate_processing' %}
+                                Being processed at IET National
+                            {% else %}
+                                Awaiting approval
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    {% if application.status != 'completed' %}
+                    <button class="btn btn-outline-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#processModal">
+                        View Process Details
+                    </button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-megaphone"></i> Recent Announcements
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if announcements %}
+                    {% for announcement in announcements %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ announcement.title }}</h6>
+                                <p class="card-text">{{ announcement.content|truncatewords:30 }}</p>
+                                <small class="text-muted">{{ announcement.created_at|date:"F d, Y" }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <a href="{% url 'announcements:list' %}" class="btn btn-outline-primary">
+                        View All Announcements
+                    </a>
+                {% else %}
+                    <p class="text-muted">No announcements at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-chat-dots"></i> Join WhatsApp Group
+                </h5>
+            </div>
+            <div class="card-body">
+                <p>Connect with other IET members on WhatsApp!</p>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-success w-100">
+                    <i class="bi bi-whatsapp"></i> Join WhatsApp Group
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Certificate Process Modal -->
+<div class="modal fade" id="processModal" tabindex="-1" aria-labelledby="processModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="processModalLabel">
+                    <i class="bi bi-diagram-3"></i> Certificate Process
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <h5 class="text-primary mb-3">Please Be Patient</h5>
+                    <p class="mb-3">Your certificate is going through our approval process. We are working to prepare a professional and high-quality certificate that will resemble your competence and professionalism.</p>
+                </div>
+                
+                <div class="alert alert-primary">
+                    <h6 class="mb-2"><strong>Why It Takes Time:</strong></h6>
+                    <p class="small mb-2">Your certificate must be processed through IET National Headquarters, where all engineers are officially recognized and registered. This ensures your membership is acknowledged at the national level.</p>
+                </div>
+                
+                <div class="alert alert-success">
+                    <h6 class="mb-2"><strong>One-Time Payment:</strong></h6>
+                    <p class="small mb-0">Once your certificate is ready, there are no additional fees. Your membership covers all your remaining academic years as a student.</p>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <p class="text-muted small mb-0">You will be notified when your certificate is ready for collection.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-dismiss alerts after 1 minute (60000 milliseconds)
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert-dismissible');
+    
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            // Use Bootstrap's Alert class to close
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 60000); // 60 seconds = 1 minute
+    });
+});
+</script>
+{% endblock %}
+
+
+
+
