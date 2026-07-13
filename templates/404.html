@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found - IET Membership System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="bi bi-exclamation-triangle" style="font-size: 6rem; color: var(--iet-primary);"></i>
+                    </div>
+                    <h1 class="display-1 fw-bold mb-3" style="color: var(--iet-primary);">404</h1>
+                    <h2 class="h3 mb-4">Page Not Found</h2>
+                    <p class="text-muted mb-4 fs-5">
+                        Oops! The page you're looking for doesn't exist or has been moved.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'landing' %}" class="btn btn-lg" 
+                           style="background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%); color: white; border: none; border-radius: 10px;">
+                            <i class="bi bi-house-door"></i> Go to Home
+                        </a>
+                        <a href="javascript:history.back()" class="btn btn-lg btn-outline-secondary" 
+                           style="border-radius: 10px;">
+                            <i class="bi bi-arrow-left"></i> Go Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

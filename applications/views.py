@@ -155,16 +155,30 @@ def application_preview(request):
 @user_passes_test(lambda u: u.is_staff)
 def staff_application_list(request):
     """Staff view of all applications"""
+    from accounts.models import StaffRole
+    from applications.course_mappings import COURSE_COLLEGE_MAPPING
     status_filter = request.GET.get('status', '')
-    
+    show_all = request.GET.get('show_all', '') == 'true'
+
     applications = Application.objects.all()
+
+    # Filter by college for Coordinators (unless show_all is true)
+    if request.user.staff_role == StaffRole.COORDINATOR and request.user.assigned_college and not show_all:
+        applications = applications.filter(course__in=[
+            course for course, college in COURSE_COLLEGE_MAPPING.items()
+            if college == request.user.assigned_college
+        ])
+
     if status_filter:
         applications = applications.filter(status=status_filter)
-    
+
     context = {
         'applications': applications,
         'status_choices': ApplicationStatus.choices,
         'current_filter': status_filter,
+        'is_coordinator': request.user.staff_role == StaffRole.COORDINATOR,
+        'assigned_college': request.user.assigned_college,
+        'showing_all': show_all,
     }
     return render(request, 'applications/staff_list.html', context)
 

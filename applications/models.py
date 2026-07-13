@@ -97,6 +97,12 @@ class Application(models.Model):
             return f"{self.first_name} {self.middle_name} {self.last_name}"
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def college(self):
+        """Get college from course using mapping"""
+        from applications.course_mappings import get_college_from_course
+        return get_college_from_course(self.course)
+
 
 
 

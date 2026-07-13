@@ -36,7 +36,10 @@ class CustomLoginView(LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    next_page = 'landing'
+    def get_next_page(self):
+        from django.contrib import messages
+        messages.success(self.request, 'You have been logged out successfully.')
+        return reverse_lazy('landing')
 
 
 

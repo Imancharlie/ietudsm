@@ -493,6 +493,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="{% url 'exports:bulk_export_form' %}">
+                                    <i class="bi bi-file-earmark-zip"></i> Bulk Export
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{% url 'announcements:list' %}">
                                     <i class="bi bi-megaphone"></i> Announcements
                                 </a>
@@ -523,9 +528,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:logout' %}">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
+                            <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link" style="background: none; border: none; cursor: pointer; color: rgba(255, 255, 255, 0.9); font-weight: 500; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </form>
                         </li>
                     {% else %}
                         <li class="nav-item">

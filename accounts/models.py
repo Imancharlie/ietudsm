@@ -13,6 +13,14 @@ class StaffRole(models.TextChoices):
     ADMIN = 'admin', 'Administrator'
 
 
+class College(models.TextChoices):
+    """College choices for Coordinator assignment"""
+    COET = 'CoET', 'College of Engineering and Technology'
+    SOMG = 'SoMG', 'School of Mines and Geosciences'
+    COAF = 'CoAF', 'College of Agriculture and Food Sciences'
+    COICT = 'CoICT', 'College of Information and Communication Technologies'
+
+
 class User(AbstractUser):
     """Custom User model extending Django's AbstractUser"""
     is_approved_member = models.BooleanField(default=False, help_text="True if payment is confirmed")
@@ -23,6 +31,13 @@ class User(AbstractUser):
         blank=True,
         null=True,
         help_text="Role for staff members"
+    )
+    assigned_college = models.CharField(
+        max_length=10,
+        choices=College.choices,
+        blank=True,
+        null=True,
+        help_text="Assigned college for Coordinator role"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

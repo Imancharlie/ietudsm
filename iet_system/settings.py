@@ -153,3 +153,7 @@ TREASURER_NAME = "IET Treasurer"  # Update with actual treasurer's name
 LIPA_NAMBA = "522853"  # Update with actual LIPA NAMBA
 LIPA_NAMBA_NAME = "IET UDSM"
 
+# Custom Error Pages
+handler404 = 'iet_system.views.custom_404'
+handler500 = 'iet_system.views.custom_500'
+handler403 = 'iet_system.views.custom_403'
