@@ -12,26 +12,38 @@ COURSE_DEPARTMENT_MAPPING = {
     # Electrical Engineering Department
     'BSc. in Electrical Engineering': 'Electrical Engineering Department',
     
-    # Civil Engineering Department
-    'BSc. in Civil Engineering': 'Civil Engineering Department',
-    
+    # Civil Engineering - Student must select specific department
+    'BSc. in Civil Engineering': 'Civil Engineering Department (Select Specific Department)',
+   
     # Chemical Engineering Department
     'BSc. in Chemical Engineering': 'Chemical Engineering Department',
     
     # Transportation and Geotechnical Engineering Department
     'BSc. in Geomatic Engineering': 'Transportation and Geotechnical Engineering Department',
-    
-    # Structural and Construction Engineering Department
-    'Bachelor of Architecture': 'Departments of Structural and Construction Engineering',
-    'BSc. in Quantity Surveying': 'Departments of Structural and Construction Engineering',
-    
+
     # Metallurgy and Mineral Processing Department
     'BSc. in Metallurgy and Mineral Processing Engineering': 'Metallurgy and Mineral Processing Department',
     
     # Geology and Mining Department
     'BSc. in Mining Engineering': 'Geology and Mining Department',
     'BSc. in Petroleum Engineering': 'Geology and Mining Department',
+
+    # Department Computer Science and Engineering 
+    'BSc. in Information Technology and Computer Engineering': 'CoICT',
+    #Department Electronics and Telecommunications Engineering
+    'BSc. in Electronics Engineering': 'CoICT',
+    'BSc. in Telecommunication Engineering': 'CoICT',
+    #Department Agricultural Engineering
+    'BSc. in Agricultural Engineering': 'CoICT',
+
 }
+
+# Civil Engineering specific departments
+CIVIL_ENGINEERING_DEPARTMENTS = [
+    'Transportation and Geotechnical Engineering Department',
+    'Structural and Construction Engineering Department',
+    'Water Resources Engineering Department',
+]
 
 # College mapping for programmes
 COURSE_COLLEGE_MAPPING = {

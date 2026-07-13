@@ -1,17 +1,23 @@
 from django import forms
 from .models import Application, ApplicationStatus
-from .course_mappings import COURSE_DEPARTMENT_MAPPING, YEAR_OF_STUDY_CHOICES, get_department_from_course
+from .course_mappings import COURSE_DEPARTMENT_MAPPING, YEAR_OF_STUDY_CHOICES, get_department_from_course, CIVIL_ENGINEERING_DEPARTMENTS
 from datetime import date
 
 
 class ApplicationForm(forms.ModelForm):
     course = forms.ChoiceField(
         choices=[('', 'Select your course')] + [(course, course) for course in sorted(COURSE_DEPARTMENT_MAPPING.keys())],
-        widget=forms.Select(attrs={'class': 'form-control'})
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'id_course'})
     )
     year_of_study = forms.ChoiceField(
         choices=[('', 'Select year of study')] + YEAR_OF_STUDY_CHOICES,
         widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    # Conditional department field for Civil Engineering students
+    civil_department = forms.ChoiceField(
+        choices=[('', 'Select your specific department')] + [(dept, dept) for dept in CIVIL_ENGINEERING_DEPARTMENTS],
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'id_civil_department'})
     )
     
     class Meta:
@@ -51,10 +57,17 @@ class ApplicationForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         course = cleaned_data.get('course')
+        civil_department = cleaned_data.get('civil_department')
         
-        # Auto-set department based on course
-        if course:
-            cleaned_data['department'] = get_department_from_course(course)
+        # Handle Civil Engineering department selection
+        if course == 'BSc. in Civil Engineering':
+            if not civil_department:
+                raise forms.ValidationError('Please select your specific department for Civil Engineering.')
+            cleaned_data['department'] = civil_department
+        else:
+            # Auto-set department based on course for other programs
+            if course:
+                cleaned_data['department'] = get_department_from_course(course)
         
         return cleaned_data
 
