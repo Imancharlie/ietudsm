@@ -349,15 +349,18 @@ def bulk_export_zip(request):
     if not applications:
         return HttpResponse("No applications match the selected filters.", status=400)
 
+    # Only check payment confirmation for applications that are in the filtered results
     unconfirmed = [
         app
         for app in applications
         if not hasattr(app, "payment") or not app.payment.is_confirmed
     ]
+    
+    # If there are unconfirmed payments in the filtered results, show error
     if unconfirmed:
         return HttpResponse(
             f"Cannot export application forms. {len(unconfirmed)} application(s) "
-            "do not have confirmed payments.",
+            "do not have confirmed payments. Use the payment status filter to export only confirmed applications.",
             status=400,
         )
 

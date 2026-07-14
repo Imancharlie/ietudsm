@@ -12,8 +12,10 @@ COURSE_DEPARTMENT_MAPPING = {
     # Electrical Engineering Department
     'BSc. in Electrical Engineering': 'Electrical Engineering Department',
     
-    # Civil Engineering - Student must select specific department
-    'BSc. in Civil Engineering': 'Civil Engineering Department (Select Specific Department)',
+    # Civil Engineering - Now as separate specializations with abbreviated names
+    'BSc. in Civil Engineering (Transportation & Geotech)': 'Dept. of Transp. & Geotech. Eng.',
+    'BSc. in Civil Engineering (Structural & Construction)': 'Dept. of Struct. & Const. Eng.',
+    'BSc. in Civil Engineering (Water Resources)': 'Dept. of Water Res. Eng.',
    
     # Chemical Engineering Department
     'BSc. in Chemical Engineering': 'Chemical Engineering Department',
@@ -38,13 +40,6 @@ COURSE_DEPARTMENT_MAPPING = {
 
 }
 
-# Civil Engineering specific departments
-CIVIL_ENGINEERING_DEPARTMENTS = [
-    'Transportation and Geotechnical Engineering Department',
-    'Structural and Construction Engineering Department',
-    'Water Resources Engineering Department',
-]
-
 # College mapping for programmes
 COURSE_COLLEGE_MAPPING = {
     # CoET - College of Engineering and Technology
@@ -53,7 +48,9 @@ COURSE_COLLEGE_MAPPING = {
     'BSc. in Textile Design': 'CoET',
     'BSc. in Textile Engineering': 'CoET',
     'BSc. in Electrical Engineering': 'CoET',
-    'BSc. in Civil Engineering': 'CoET',
+    'BSc. in Civil Engineering (Transportation & Geotech)': 'CoET',
+    'BSc. in Civil Engineering (Structural & Construction)': 'CoET',
+    'BSc. in Civil Engineering (Water Resources)': 'CoET',
     'BSc. in Chemical Engineering': 'CoET',
     'BSc. in Geomatic Engineering': 'CoET',
     'Bachelor of Architecture': 'CoET',

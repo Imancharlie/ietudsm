@@ -154,11 +154,12 @@ def application_preview(request):
 
 @user_passes_test(lambda u: u.is_staff)
 def staff_application_list(request):
-    """Staff view of all applications"""
+    """Staff view of all applications with search functionality"""
     from accounts.models import StaffRole
     from applications.course_mappings import COURSE_COLLEGE_MAPPING
     status_filter = request.GET.get('status', '')
     show_all = request.GET.get('show_all', '') == 'true'
+    search_query = request.GET.get('search', '')
 
     applications = Application.objects.all()
 
@@ -171,6 +172,18 @@ def staff_application_list(request):
 
     if status_filter:
         applications = applications.filter(status=status_filter)
+    
+    # Search functionality
+    if search_query:
+        applications = applications.filter(
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(middle_name__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(phone_number__icontains=search_query) |
+            Q(course__icontains=search_query) |
+            Q(department__icontains=search_query)
+        )
 
     context = {
         'applications': applications,
@@ -179,6 +192,7 @@ def staff_application_list(request):
         'is_coordinator': request.user.staff_role == StaffRole.COORDINATOR,
         'assigned_college': request.user.assigned_college,
         'showing_all': show_all,
+        'search_query': search_query,
     }
     return render(request, 'applications/staff_list.html', context)
 

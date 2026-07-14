@@ -51,21 +51,9 @@ class Application(models.Model):
     
     @property
     def year_of_graduation(self):
-        """Calculate expected year of graduation based on year of study (all programs are 4 years)"""
-        from datetime import date
-        current_year = date.today().year
-        year_mapping = {
-            '1': current_year + 4,
-            '2': current_year + 3,
-            '3': current_year + 2,
-            '4': current_year + 1,
-            # Legacy support for old format
-            'First Year': current_year + 4,
-            'Second Year': current_year + 3,
-            'Third Year': current_year + 2,
-            'Fourth Year': current_year + 1,
-        }
-        return year_mapping.get(self.year_of_study, current_year + 4)
+        """Calculate expected year of graduation based on admission year + 4 years"""
+        # Use admission year + 4 for accurate graduation calculation
+        return self.date_of_admission + 4
     
     @property
     def admission_date_formatted(self):
