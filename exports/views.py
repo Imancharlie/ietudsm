@@ -916,13 +916,16 @@ def get_filtered_applications(request):
     
     queryset = Application.objects.all()
 
-    department = request.GET.get("department")
-    year_of_study = request.GET.get("year_of_study")
-    status = request.GET.get("status")
-    date_from = request.GET.get("date_from")
-    date_to = request.GET.get("date_to")
-    payment_status = request.GET.get("payment_status")
-    college = request.GET.get("college")
+    # Check both GET and POST for filter parameters (POST used for export, GET for filtering)
+    request_data = request.POST if request.method == 'POST' else request.GET
+    
+    department = request_data.get("department")
+    year_of_study = request_data.get("year_of_study")
+    status = request_data.get("status")
+    date_from = request_data.get("date_from")
+    date_to = request_data.get("date_to")
+    payment_status = request_data.get("payment_status")
+    college = request_data.get("college")
 
     if college:
         queryset = queryset.filter(course__in=[

@@ -13,9 +13,9 @@ COURSE_DEPARTMENT_MAPPING = {
     'BSc. in Electrical Engineering': 'Electrical Engineering Department',
     
     # Civil Engineering - Now as separate specializations with abbreviated names
-    'BSc. in Civil Engineering (Transportation & Geotech)': 'Dept. of Transp. & Geotech. Eng.',
-    'BSc. in Civil Engineering (Structural & Construction)': 'Dept. of Struct. & Const. Eng.',
-    'BSc. in Civil Engineering (Water Resources)': 'Dept. of Water Res. Eng.',
+    'BSc. in Civil Engineering (Transportation & Geotech)': 'Department of Transportation and Geotechnical Engineering',
+    'BSc. in Civil Engineering (Structural & Construction)': 'Department of Structural and Construction Engineering',
+    'BSc. in Civil Engineering (Water Resources)': 'Department of Water Resources Engineering',
    
     # Chemical Engineering Department
     'BSc. in Chemical Engineering': 'Chemical Engineering Department',
@@ -31,12 +31,12 @@ COURSE_DEPARTMENT_MAPPING = {
     'BSc. in Petroleum Engineering': 'Geology and Mining Department',
 
     # Department Computer Science and Engineering 
-    'BSc. in Information Technology and Computer Engineering': 'CoICT',
+    'BSc. in Information Technology and Computer Engineering': 'Department Computer Science and Engineering',
     #Department Electronics and Telecommunications Engineering
-    'BSc. in Electronics Engineering': 'CoICT',
-    'BSc. in Telecommunication Engineering': 'CoICT',
+    'BSc. in Electronics Engineering': 'Department Electronics and Telecommunications Engineering',
+    'BSc. in Telecommunication Engineering': 'Department Electronics and Telecommunications Engineering',
     #Department Agricultural Engineering
-    'BSc. in Agricultural Engineering': 'CoICT',
+    'BSc. in Agricultural Engineering': 'Department Agricultural Engineering',
 
 }
 

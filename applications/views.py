@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.conf import settings
+from django.db.models import Q
 from .models import Application, ApplicationStatus
 from .forms import ApplicationForm
 from payments.models import Payment
