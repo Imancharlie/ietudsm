@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Dashboard - IET Membership{% endblock %}
 
@@ -21,6 +22,16 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
+
+<!-- Latest Announcement -->
+<div id="latestAnnouncement" class="d-none">
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <h5 class="alert-heading"><i class="bi bi-megaphone"></i> <span id="announcementTitle"></span></h5>
+        <p class="mb-2" id="announcementContent"></p>
+        <small class="text-muted" id="announcementDate"></small>
+        <button type="button" class="btn-close" onclick="markAnnouncementAsRead()" aria-label="Close"></button>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-6 mb-4">
@@ -61,33 +72,6 @@
             </div>
         </div>
     </div>
-    <div class="col-12">
-        <div class="card shadow">
-            <div class="card-header bg-info text-white">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-megaphone"></i> Recent Announcements
-                </h5>
-            </div>
-            <div class="card-body">
-                {% if announcements %}
-                    {% for announcement in announcements %}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ announcement.title }}</h6>
-                                <p class="card-text">{{ announcement.content|truncatewords:30 }}</p>
-                                <small class="text-muted">{{ announcement.created_at|date:"F d, Y" }}</small>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <a href="{% url 'announcements:list' %}" class="btn btn-outline-primary">
-                        View All Announcements
-                    </a>
-                {% else %}
-                    <p class="text-muted">No announcements at the moment.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
     <div class="col-md-6 mb-4">
         <div class="card shadow h-100">
             <div class="card-header bg-success text-white">
@@ -100,6 +84,176 @@
                 <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-success w-100">
                     <i class="bi bi-whatsapp"></i> Join WhatsApp Group
                 </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Professional Development Modal -->
+<div class="modal fade" id="guidanceModal" tabindex="-1" aria-labelledby="guidanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="guidanceModalLabel">
+                    <i class="bi bi-lightbulb"></i> Your Professional Development Journey
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <!-- CV Guidance -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3"><i class="bi bi-file-earmark-person"></i> Professional CV</h6>
+                                <p class="card-text small mb-3">Do you have a professional CV?</p>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-outline-success btn-sm" onclick="handleCVResponse(true)">Yes, I have one</button>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="handleCVResponse(false)">No, I need guidance</button>
+                                </div>
+                                <div id="cvGuidance" class="d-none">
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Why Create a CV Early?</h6>
+                                        <p class="small mb-2">A CV is much more than a document for applying to jobs. It is a powerful tool for self-assessment and professional growth.</p>
+                                        <p class="small mb-2"><strong>Building your CV early allows you to honestly evaluate your current professional profile:</strong></p>
+                                        <ul class="small mb-2">
+                                            <li>What technical skills do I actually have?</li>
+                                            <li>What projects have I completed?</li>
+                                            <li>What software can I confidently use?</li>
+                                            <li>What leadership experience have I gained?</li>
+                                            <li>What practical engineering experience do I have?</li>
+                                            <li>What achievements am I proud of?</li>
+                                        </ul>
+                                        <p class="small mb-2">Very often, students discover that many sections of their CV are almost empty. That realization is valuable—it helps you identify where you need to improve long before graduation.</p>
+                                        
+                                        <h6 class="alert-heading mt-3"><i class="bi bi-arrow-repeat"></i> A Living Document</h6>
+                                        <p class="small mb-2">Treat your CV as a living document. Update it regularly whenever you gain:</p>
+                                        <ul class="small mb-2">
+                                            <li>New technical skills</li>
+                                            <li>Certifications</li>
+                                            <li>Leadership roles</li>
+                                            <li>Engineering projects</li>
+                                            <li>Industrial training</li>
+                                            <li>Volunteering experience</li>
+                                            <li>Competitions</li>
+                                            <li>Research</li>
+                                            <li>Workshops and conferences</li>
+                                        </ul>
+                                        <p class="small mb-2">Over time, you will clearly see your own professional growth.</p>
+                                        
+                                        <h6 class="alert-heading mt-3"><i class="bi bi-clock"></i> Don't Wait Until Opportunities Arrive</h6>
+                                        <p class="small mb-2">Many students begin writing a CV only after a job, internship, scholarship, or graduate programme is announced. By then:</p>
+                                        <ul class="small mb-2">
+                                            <li>They are rushing</li>
+                                            <li>They forget achievements</li>
+                                            <li>They produce lower-quality CVs</li>
+                                            <li>They have little time to tailor the document</li>
+                                        </ul>
+                                        <p class="small mb-2">Instead, prepare early. When opportunities arise, you should simply:</p>
+                                        <ul class="small mb-2">
+                                            <li>Refine the CV</li>
+                                            <li>Tailor it to the position</li>
+                                            <li>Highlight the most relevant experiences</li>
+                                            <li>Submit a polished application confidently</li>
+                                        </ul>
+                                        
+                                        <h6 class="alert-heading mt-3"><i class="bi bi-download"></i> Resources</h6>
+                                        <a href="{% static 'SAMPLE CV.docx' %}" class="btn btn-primary btn-sm w-100">
+                                            <i class="bi bi-file-earmark-word"></i> Download Professional CV Template
+                                        </a>
+                                        <p class="small text-muted mt-2 mb-0">You are free to use any professional CV template that suits your style.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- LinkedIn Guidance -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title mb-3"><i class="bi bi-linkedin"></i> LinkedIn Profile</h6>
+                                <p class="card-text small mb-3">Do you have a LinkedIn profile?</p>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-outline-success btn-sm" onclick="handleLinkedInResponse(true)">Yes, I have one</button>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="handleLinkedInResponse(false)">No, I need guidance</button>
+                                </div>
+                                <div id="linkedinGuidance" class="d-none">
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading"><i class="bi bi-question-circle"></i> What is LinkedIn?</h6>
+                                        <p class="small mb-2">LinkedIn is the world's largest professional networking platform where students, engineers, recruiters, companies, researchers, and industry leaders connect, share knowledge, and discover opportunities.</p>
+                                        
+                                        <h6 class="alert-heading mt-3"><i class="bi bi-stars"></i> Why Every Engineering Student Should Have LinkedIn</h6>
+                                        
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <div class="card bg-white border">
+                                                    <div class="card-body p-2 text-center">
+                                                        <i class="bi bi-eye text-primary fs-4"></i>
+                                                        <p class="small mb-0 mt-1"><strong>Professional Visibility</strong></p>
+                                                        <p class="small text-muted mb-0">Build your professional presence before graduation</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-white border">
+                                                    <div class="card-body p-2 text-center">
+                                                        <i class="bi bi-search text-success fs-4"></i>
+                                                        <p class="small mb-0 mt-1"><strong>Discover Opportunities</strong></p>
+                                                        <p class="small text-muted mb-0">Find internships, graduate programmes, scholarships, and more</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-white border">
+                                                    <div class="card-body p-2 text-center">
+                                                        <i class="bi bi-people text-warning fs-4"></i>
+                                                        <p class="small mb-0 mt-1"><strong>Networking</strong></p>
+                                                        <p class="small text-muted mb-0">Connect with engineers, alumni, lecturers, and recruiters</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card bg-white border">
+                                                    <div class="card-body p-2 text-center">
+                                                        <i class="bi bi-graph-up text-info fs-4"></i>
+                                                        <p class="small mb-0 mt-1"><strong>Personal Growth</strong></p>
+                                                        <p class="small text-muted mb-0">Learn from professionals and stay motivated</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h6 class="alert-heading mt-3"><i class="bi bi-download"></i> Resources</h6>
+                                        <a href="https://www.linkedin.com/signup" target="_blank" class="btn btn-primary btn-sm w-100">
+                                            <i class="bi bi-plus-circle"></i> Create a LinkedIn Account
+                                        </a>
+                                        <p class="small text-muted mt-2 mb-0">A short guide on creating an effective engineering LinkedIn profile will be coming soon.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Final Message -->
+                <div class="alert alert-success mt-3">
+                    <h6 class="alert-heading"><i class="bi bi-trophy"></i> Your Journey to Becoming That Engineer</h6>
+                    <p class="small mb-2">Becoming a great engineer does not happen overnight. It is the result of consistently learning, building skills, gaining experience, and preparing for opportunities before they arrive.</p>
+                    <p class="small mb-2">Every project you complete, every workshop you attend, every leadership role you take, and every skill you develop brings you one step closer to becoming <strong>That Engineer</strong>.</p>
+                    <hr>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{% static 'SAMPLE CV.docx' %}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-download"></i> Download CV Template
+                        </a>
+                        <a href="https://www.linkedin.com/signup" target="_blank" class="btn btn-info btn-sm">
+                            <i class="bi bi-linkedin"></i> Create LinkedIn Profile
+                        </a>
+                        <button class="btn btn-success btn-sm" data-bs-dismiss="modal">
+                            <i class="bi bi-check-circle"></i> Continue to Dashboard
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -158,7 +312,252 @@ document.addEventListener('DOMContentLoaded', function() {
             bsAlert.close();
         }, 60000); // 60 seconds = 1 minute
     });
+    
+    // Show guidance modal if user hasn't interacted with it yet
+    showGuidanceModalIfNeeded();
+    
+    // Show latest announcement if available
+    showLatestAnnouncement();
 });
+
+// LocalStorage keys
+const STORAGE_KEYS = {
+    GUIDANCE_INTERACTED: 'iet_guidance_interacted',
+    CV_STATUS: 'iet_cv_status',
+    LINKEDIN_STATUS: 'iet_linkedin_status',
+    ANNOUNCEMENT_READ: 'iet_announcement_read_'
+};
+
+// Show guidance modal if user hasn't interacted with it
+function showGuidanceModalIfNeeded() {
+    const hasInteracted = localStorage.getItem(STORAGE_KEYS.GUIDANCE_INTERACTED);
+    
+    if (!hasInteracted) {
+        // Show the modal after a short delay
+        setTimeout(function() {
+            const guidanceModal = new bootstrap.Modal(document.getElementById('guidanceModal'));
+            guidanceModal.show();
+        }, 1000);
+    }
+}
+
+// Handle CV response
+function handleCVResponse(hasCV) {
+    const cvGuidance = document.getElementById('cvGuidance');
+    
+    // Store the response in localStorage
+    localStorage.setItem(STORAGE_KEYS.CV_STATUS, hasCV ? 'has_cv' : 'needs_guidance');
+    
+    if (hasCV) {
+        // If they have a CV, show a brief message
+        cvGuidance.classList.remove('d-none');
+        cvGuidance.innerHTML = `
+            <div class="alert alert-success">
+                <h6 class="alert-heading"><i class="bi bi-check-circle"></i> Great!</h6>
+                <p class="small mb-0">That's excellent! Remember to keep your CV updated regularly as you gain new skills, experiences, and achievements. Treat it as a living document that grows with your professional journey.</p>
+            </div>
+        `;
+    } else {
+        // If they don't have a CV, show the full guidance
+        cvGuidance.classList.remove('d-none');
+        cvGuidance.innerHTML = `
+            <div class="alert alert-info">
+                <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Why Create a CV Early?</h6>
+                <p class="small mb-2">A CV is much more than a document for applying to jobs. It is a powerful tool for self-assessment and professional growth.</p>
+                <p class="small mb-2"><strong>Building your CV early allows you to honestly evaluate your current professional profile:</strong></p>
+                <ul class="small mb-2">
+                    <li>What technical skills do I actually have?</li>
+                    <li>What projects have I completed?</li>
+                    <li>What software can I confidently use?</li>
+                    <li>What leadership experience have I gained?</li>
+                    <li>What practical engineering experience do I have?</li>
+                    <li>What achievements am I proud of?</li>
+                </ul>
+                <p class="small mb-2">Very often, students discover that many sections of their CV are almost empty. That realization is valuable—it helps you identify where you need to improve long before graduation.</p>
+                
+                <h6 class="alert-heading mt-3"><i class="bi bi-arrow-repeat"></i> A Living Document</h6>
+                <p class="small mb-2">Treat your CV as a living document. Update it regularly whenever you gain:</p>
+                <ul class="small mb-2">
+                    <li>New technical skills</li>
+                    <li>Certifications</li>
+                    <li>Leadership roles</li>
+                    <li>Engineering projects</li>
+                    <li>Industrial training</li>
+                    <li>Volunteering experience</li>
+                    <li>Competitions</li>
+                    <li>Research</li>
+                    <li>Workshops and conferences</li>
+                </ul>
+                <p class="small mb-2">Over time, you will clearly see your own professional growth.</p>
+                
+                <h6 class="alert-heading mt-3"><i class="bi bi-clock"></i> Don't Wait Until Opportunities Arrive</h6>
+                <p class="small mb-2">Many students begin writing a CV only after a job, internship, scholarship, or graduate programme is announced. By then:</p>
+                <ul class="small mb-2">
+                    <li>They are rushing</li>
+                    <li>They forget achievements</li>
+                    <li>They produce lower-quality CVs</li>
+                    <li>They have little time to tailor the document</li>
+                </ul>
+                <p class="small mb-2">Instead, prepare early. When opportunities arise, you should simply:</p>
+                <ul class="small mb-2">
+                    <li>Refine the CV</li>
+                    <li>Tailor it to the position</li>
+                    <li>Highlight the most relevant experiences</li>
+                    <li>Submit a polished application confidently</li>
+                </ul>
+                
+                <h6 class="alert-heading mt-3"><i class="bi bi-download"></i> Resources</h6>
+                <a href="{% static 'SAMPLE CV.docx' %}" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-file-earmark-word"></i> Download Professional CV Template
+                </a>
+                <p class="small text-muted mt-2 mb-0">You are free to use any professional CV template that suits your style.</p>
+            </div>
+        `;
+    }
+    
+    // Check if both CV and LinkedIn have been responded to
+    checkGuidanceCompletion();
+}
+
+// Handle LinkedIn response
+function handleLinkedInResponse(hasLinkedIn) {
+    const linkedinGuidance = document.getElementById('linkedinGuidance');
+    
+    // Store the response in localStorage
+    localStorage.setItem(STORAGE_KEYS.LINKEDIN_STATUS, hasLinkedIn ? 'has_linkedin' : 'needs_guidance');
+    
+    if (hasLinkedIn) {
+        // If they have LinkedIn, show a brief message
+        linkedinGuidance.classList.remove('d-none');
+        linkedinGuidance.innerHTML = `
+            <div class="alert alert-success">
+                <h6 class="alert-heading"><i class="bi bi-check-circle"></i> Excellent!</h6>
+                <p class="small mb-0">That's great! Make sure to keep your LinkedIn profile updated, share your engineering projects, connect with professionals in your field, and engage with industry content. Your LinkedIn presence can open many doors for your engineering career.</p>
+            </div>
+        `;
+    } else {
+        // If they don't have LinkedIn, show the full guidance
+        linkedinGuidance.classList.remove('d-none');
+        linkedinGuidance.innerHTML = `
+            <div class="alert alert-info">
+                <h6 class="alert-heading"><i class="bi bi-question-circle"></i> What is LinkedIn?</h6>
+                <p class="small mb-2">LinkedIn is the world's largest professional networking platform where students, engineers, recruiters, companies, researchers, and industry leaders connect, share knowledge, and discover opportunities.</p>
+                
+                <h6 class="alert-heading mt-3"><i class="bi bi-stars"></i> Why Every Engineering Student Should Have LinkedIn</h6>
+                
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <div class="card bg-white border">
+                            <div class="card-body p-2 text-center">
+                                <i class="bi bi-eye text-primary fs-4"></i>
+                                <p class="small mb-0 mt-1"><strong>Professional Visibility</strong></p>
+                                <p class="small text-muted mb-0">Build your professional presence before graduation</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-white border">
+                            <div class="card-body p-2 text-center">
+                                <i class="bi bi-search text-success fs-4"></i>
+                                <p class="small mb-0 mt-1"><strong>Discover Opportunities</strong></p>
+                                <p class="small text-muted mb-0">Find internships, graduate programmes, scholarships, and more</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-white border">
+                            <div class="card-body p-2 text-center">
+                                <i class="bi bi-people text-warning fs-4"></i>
+                                <p class="small mb-0 mt-1"><strong>Networking</strong></p>
+                                <p class="small text-muted mb-0">Connect with engineers, alumni, lecturers, and recruiters</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card bg-white border">
+                            <div class="card-body p-2 text-center">
+                                <i class="bi bi-graph-up text-info fs-4"></i>
+                                <p class="small mb-0 mt-1"><strong>Personal Growth</strong></p>
+                                <p class="small text-muted mb-0">Learn from professionals and stay motivated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6 class="alert-heading mt-3"><i class="bi bi-download"></i> Resources</h6>
+                <a href="https://www.linkedin.com/signup" target="_blank" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-plus-circle"></i> Create a LinkedIn Account
+                </a>
+                <p class="small text-muted mt-2 mb-0">A short guide on creating an effective engineering LinkedIn profile will be coming soon.</p>
+            </div>
+        `;
+    }
+    
+    // Check if both CV and LinkedIn have been responded to
+    checkGuidanceCompletion();
+}
+
+// Check if guidance is complete and mark as interacted
+function checkGuidanceCompletion() {
+    const cvStatus = localStorage.getItem(STORAGE_KEYS.CV_STATUS);
+    const linkedinStatus = localStorage.getItem(STORAGE_KEYS.LINKEDIN_STATUS);
+    
+    if (cvStatus && linkedinStatus) {
+        // Mark as interacted so modal won't show again
+        localStorage.setItem(STORAGE_KEYS.GUIDANCE_INTERACTED, 'true');
+        
+        // Auto-close modal after showing both responses
+        setTimeout(function() {
+            const guidanceModal = bootstrap.Modal.getInstance(document.getElementById('guidanceModal'));
+            if (guidanceModal) {
+                guidanceModal.hide();
+            }
+        }, 3000);
+    }
+}
+
+// Show latest announcement
+function showLatestAnnouncement() {
+    {% if announcements %}
+        const announcements = [
+            {% for announcement in announcements %}
+                {
+                    id: {{ announcement.id }},
+                    title: "{{ announcement.title|escapejs }}",
+                    content: "{{ announcement.content|escapejs }}",
+                    date: "{{ announcement.created_at|date:'F d, Y' }}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        
+        // Get the latest announcement
+        const latestAnnouncement = announcements[0];
+        
+        // Check if this announcement has been read
+        const announcementReadKey = STORAGE_KEYS.ANNOUNCEMENT_READ + latestAnnouncement.id;
+        const hasRead = localStorage.getItem(announcementReadKey);
+        
+        if (!hasRead) {
+            // Show the announcement
+            document.getElementById('latestAnnouncement').classList.remove('d-none');
+            document.getElementById('announcementTitle').textContent = latestAnnouncement.title;
+            document.getElementById('announcementContent').textContent = latestAnnouncement.content;
+            document.getElementById('announcementDate').textContent = latestAnnouncement.date;
+        }
+    {% endif %}
+}
+
+// Mark announcement as read
+function markAnnouncementAsRead() {
+    {% if announcements %}
+        const latestAnnouncementId = {{ announcements.0.id }};
+        const announcementReadKey = STORAGE_KEYS.ANNOUNCEMENT_READ + latestAnnouncementId;
+        localStorage.setItem(announcementReadKey, 'true');
+        
+        // Hide the announcement
+        document.getElementById('latestAnnouncement').classList.add('d-none');
+    {% endif %}
+}
 </script>
 {% endblock %}
 

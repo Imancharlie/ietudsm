@@ -145,12 +145,12 @@ LOGOUT_REDIRECT_URL = 'landing'
 REGISTRATION_FEE = 10000  # Amount in TZS
 
 # WhatsApp Contacts
-WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/your-group-link"
-TREASURER_WHATSAPP = "+255700000000"  # Update with actual treasurer's WhatsApp number
+WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/HWTg4c6JKcUJi69RCZHaX7"
+TREASURER_WHATSAPP = "+255763167686"  # Update with actual treasurer's WhatsApp number
 TREASURER_NAME = "IET Treasurer"  # Update with actual treasurer's name
 
 # LIPA NAMBA Payment Details
-LIPA_NAMBA = "522853"  # Update with actual LIPA NAMBA
+LIPA_NAMBA = "06989001197"  # Update with actual LIPA NAMBA
 LIPA_NAMBA_NAME = "IET UDSM"
 
 # Custom Error Pages

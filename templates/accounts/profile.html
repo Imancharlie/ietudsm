@@ -92,6 +92,12 @@
                         <div class="col-md-4"><strong>Member Since:</strong></div>
                         <div class="col-md-8">{{ application.created_at|date:"F d, Y" }}</div>
                     </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'accounts:settings' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-gear"></i> Account Settings
+                        </a>
+                    </div>
                 {% else %}
                     <div class="alert alert-info">
                         <p>You haven't completed your application yet.</p>

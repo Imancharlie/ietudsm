@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Account Settings - IET Membership{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="bi bi-gear"></i> Account Settings
+                </h3>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="true">
+                            <i class="bi bi-lock"></i> Change Password
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content mt-3" id="settingsTabsContent">
+                    <div class="tab-pane fade show active" id="password" role="tabpanel" aria-labelledby="password-tab">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Change Your Password</h5>
+                                <form method="post" id="passwordForm">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="current_password" class="form-label">Current Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="current_password" name="current_password" required>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('current_password', 'current_eye')">
+                                                <i class="bi bi-eye" id="current_eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">New Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="new_password" name="new_password" required>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('new_password', 'new_eye')">
+                                                <i class="bi bi-eye" id="new_eye"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">Your password must be at least 8 characters long.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirm_password', 'confirm_eye')">
+                                                <i class="bi bi-eye" id="confirm_eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check-circle"></i> Update Password
+                                        </button>
+                                        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                                            <i class="bi bi-arrow-left"></i> Back to Profile
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePassword(inputId, eyeId) {
+    const input = document.getElementById(inputId);
+    const eye = document.getElementById(eyeId);
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.classList.remove('bi-eye');
+        eye.classList.add('bi-eye-slash');
+    } else {
+        input.type = 'password';
+        eye.classList.remove('bi-eye-slash');
+        eye.classList.add('bi-eye');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordForm = document.getElementById('passwordForm');
+    
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', function(e) {
+            const currentPassword = document.getElementById('current_password').value;
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            // Validation
+            if (newPassword.length < 8) {
+                e.preventDefault();
+                alert('New password must be at least 8 characters long.');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('New password and confirm password do not match.');
+                return;
+            }
+            
+            if (currentPassword === newPassword) {
+                e.preventDefault();
+                alert('New password must be different from current password.');
+                return;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
