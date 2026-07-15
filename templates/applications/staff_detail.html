@@ -109,6 +109,7 @@
                         <p><strong>Confirmed by:</strong> {{ payment.confirmed_by.get_full_name|default:payment.confirmed_by.email }}</p>
                         <p><strong>Confirmed at:</strong> {{ payment.confirmed_at|date:"M d, Y H:i" }}</p>
                     {% else %}
+                        {% if request.user.can_confirm_payments %}
                         <div class="d-grid gap-2">
                             <a href="{% url 'payments:confirm' payment.pk %}" class="btn btn-success btn-sm">
                                 <i class="bi bi-check-circle"></i> Confirm Payment
@@ -117,6 +118,9 @@
                                 <i class="bi bi-x-circle"></i> Reject Payment
                             </a>
                         </div>
+                        {% else %}
+                        <p class="text-muted small">Only Treasurer can confirm payments.</p>
+                        {% endif %}
                     {% endif %}
                 {% else %}
                     <p class="text-muted">No payment information available.</p>

@@ -134,6 +134,16 @@ def application_preview(request):
                 application.save()
                 request.user.has_completed_application = True
                 request.user.save()
+                
+                # Create welcome notification for new member
+                from accounts.models import Notification
+                Notification.objects.create(
+                    user=request.user,
+                    title="Welcome to IET UDSM!",
+                    message="Welcome to the IET UDSM Student Chapter! Your journey to becoming 'That Engineer' starts now. Remember to create a professional CV early, build your LinkedIn profile, and actively participate in IET activities. Every workshop, project, and leadership opportunity brings you closer to engineering excellence.",
+                    notification_type='general'
+                )
+                
                 messages.success(request, 'Application submitted successfully! Staff will review your payment.')
                 return redirect('applications:status')
         elif 'edit_application' in request.POST:

@@ -29,7 +29,7 @@ COURSE_DEPARTMENT_MAPPING = {
     # Geology and Mining Department
     'BSc. in Mining Engineering': 'Geology and Mining Department',
     'BSc. in Petroleum Engineering': 'Geology and Mining Department',
-
+    'BSc. in Engineering Geology': 'Geology and Mining Department',
     # Department Computer Science and Engineering 
     'BSc. in Information Technology and Computer Engineering': 'Department Computer Science and Engineering',
     #Department Electronics and Telecommunications Engineering

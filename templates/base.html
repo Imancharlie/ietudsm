@@ -354,6 +354,18 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
+    <!-- Messages Container - Fixed at top like modern notifications -->
+    <div class="container" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 2000; max-width: 600px;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert" style="margin-bottom: 0.5rem;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'landing' %}">
@@ -462,18 +474,6 @@
     <main class="container my-4" id="main-content">
         {% block content %}{% endblock %}
     </main>
-
-    <!-- Messages Container - Outside main to prevent appearing inside cards -->
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
 
 <footer class="mt-auto">
     <div class="container text-center"> 

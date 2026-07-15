@@ -58,8 +58,8 @@ class User(AbstractUser):
         return self.is_staff and self.staff_role == role
     
     def can_confirm_payments(self):
-        """Check if user can confirm payments (Treasurer or Admin)"""
-        return self.is_staff and self.staff_role in [StaffRole.TREASURER, StaffRole.ADMIN, StaffRole.CHAIRPERSON]
+        """Check if user can confirm payments (Treasurer or Admin only)"""
+        return self.is_staff and self.staff_role in [StaffRole.TREASURER, StaffRole.ADMIN]
     
     def can_manage_certificates(self):
         """Check if user can manage certificates"""
