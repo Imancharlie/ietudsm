@@ -4,109 +4,104 @@
 
 {% block extra_css %}
 <style>
-    /* Clickable table rows */
-    .table tbody tr {
-        transition: all 0.2s ease;
+    /* ---------- Clickable rows ---------- */
+    .table tbody tr.row-link { cursor: pointer; transition: background-color 0.15s ease; }
+    .table tbody tr.row-link:hover { background-color: var(--iet-secondary-light); }
+    .table tbody tr.row-link:focus-within { outline: 2px solid var(--iet-primary); outline-offset: -2px; }
+
+    /* ---------- Stat tiles ---------- */
+    .stat-tile { border: 1px solid var(--iet-border); border-radius: var(--iet-radius-lg); box-shadow: 0 2px 10px var(--iet-shadow); height: 100%; }
+    .stat-tile .card-body { padding: 1rem 0.75rem; text-align: center; }
+    .stat-icon {
+        width: 40px; height: 40px; border-radius: 10px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 1.15rem; margin-bottom: 0.5rem;
     }
-    
-    .table tbody tr:hover {
-        background-color: rgba(220, 20, 60, 0.05);
-        transform: scale(1.01);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .stat-icon.primary { background: var(--iet-secondary-light); color: var(--iet-primary); }
+    .stat-icon.warning  { background: #FCF3D6; color: #B4790A; }
+    .stat-icon.info     { background: #E4EEF7; color: #2A6FA0; }
+    .stat-icon.success  { background: #E1F5E3; color: #217A34; }
+    .stat-tile h4 { font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 1.5rem; }
+    .stat-tile .stat-label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--iet-text-secondary); }
+
+    @media (max-width: 400px) {
+        .stat-tile h4 { font-size: 1.2rem; }
+        .stat-icon { width: 34px; height: 34px; font-size: 1rem; }
     }
-    
-    /* Compact cards for mobile */
-    @media (max-width: 576px) {
-        .card-body h4 {
-            font-size: 1.25rem;
-        }
-        
-        .card-body small {
-            font-size: 0.65rem;
-        }
-        
-        .card-body i {
-            font-size: 1.2rem !important;
-        }
-    }
-    
-    /* Responsive table improvements */
-    .table-responsive {
-        border-radius: 0.5rem;
-        overflow: hidden;
-    }
-    
-    .table thead {
-        background: linear-gradient(135deg, var(--iet-red) 0%, var(--iet-dark-red) 100%);
-        color: white;
-    }
-    
-    .table thead th {
+
+    /* ---------- Colored card headers (override base white header) ---------- */
+    .card-header-tone { color: var(--iet-white) !important; border-bottom: none !important; }
+    .card-header-tone.tone-primary { background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%) !important; }
+    .card-header-tone.tone-warning { background: #B4790A !important; }
+    .card-header-tone.tone-info    { background: #2A6FA0 !important; }
+    .card-header-tone.tone-success { background: #217A34 !important; }
+
+    /* ---------- Tables ---------- */
+    .table-responsive { border-radius: var(--iet-radius-md); overflow: hidden; }
+    .dash-table thead { background: var(--iet-neutral); }
+    .dash-table thead th {
         border: none;
+        font-family: var(--font-display);
         font-weight: 600;
-        font-size: 0.85rem;
-        padding: 0.75rem 0.5rem;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--iet-text-secondary);
+        padding: 0.7rem 0.6rem;
     }
-    
-    .table tbody td {
-        vertical-align: middle;
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Status badge sizing */
-    .status-badge {
-        white-space: nowrap;
-    }
+    .dash-table tbody td { vertical-align: middle; padding: 0.7rem 0.6rem; font-size: 0.9rem; border-bottom: 1px solid var(--iet-border); }
+    .dash-table tbody tr:last-child td { border-bottom: none; }
+    .dash-table code { font-family: var(--font-mono); background: var(--iet-neutral); padding: 0.15rem 0.4rem; border-radius: 5px; font-size: 0.82rem; }
+
+    .status-badge { white-space: nowrap; }
+
+    .quick-actions .btn { width: 100%; justify-content: flex-start; gap: 0.5rem; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="mb-4">
-    <h2><i class="bi bi-speedometer2"></i> Staff Dashboard</h2>
+    <h2 class="mb-1"><i class="bi bi-speedometer2 text-primary"></i> Staff Dashboard</h2>
     {% if user.staff_role %}
-        <p class="text-muted">Role: <strong>{{ user.get_staff_role_display }}</strong></p>
+        <p class="text-muted mb-0">Role: <strong>{{ user.get_staff_role_display }}</strong></p>
     {% endif %}
 </div>
 
-<!-- Statistics Cards - Compact & Responsive -->
-<div class="row g-2 mb-4">
-    <div class="col-3">
-        <div class="card shadow-sm border-primary h-100">
-            <div class="card-body text-center p-2">
-                <i class="bi bi-file-earmark-text text-primary" style="font-size: 1.5rem;"></i>
-                <h4 class="mt-1 mb-0">{{ total_applications }}</h4>
-                <small class="text-muted d-block" style="font-size: 0.75rem;">Total Apps</small>
+<!-- Statistics: 2-up on phones, 4-up from tablet width -->
+<div class="row g-2 g-md-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card stat-tile">
+            <div class="card-body">
+                <div class="stat-icon primary"><i class="bi bi-file-earmark-text"></i></div>
+                <h4>{{ total_applications }}</h4>
+                <div class="stat-label">Total Apps</div>
             </div>
         </div>
     </div>
-    
-    <div class="col-3">
-        <div class="card shadow-sm border-warning h-100">
-            <div class="card-body text-center p-2">
-                <i class="bi bi-clock-history text-warning" style="font-size: 1.5rem;"></i>
-                <h4 class="mt-1 mb-0">{{ pending_payments }}</h4>
-                <small class="text-muted d-block" style="font-size: 0.75rem;">Pending</small>
+    <div class="col-6 col-md-3">
+        <div class="card stat-tile">
+            <div class="card-body">
+                <div class="stat-icon warning"><i class="bi bi-clock-history"></i></div>
+                <h4>{{ pending_payments }}</h4>
+                <div class="stat-label">Pending</div>
             </div>
         </div>
     </div>
-    
-    <div class="col-3">
-        <div class="card shadow-sm border-info h-100">
-            <div class="card-body text-center p-2">
-                <i class="bi bi-hourglass-split text-info" style="font-size: 1.5rem;"></i>
-                <h4 class="mt-1 mb-0">{{ pending_certificates }}</h4>
-                <small class="text-muted d-block" style="font-size: 0.75rem;">Processing</small>
+    <div class="col-6 col-md-3">
+        <div class="card stat-tile">
+            <div class="card-body">
+                <div class="stat-icon info"><i class="bi bi-hourglass-split"></i></div>
+                <h4>{{ pending_certificates }}</h4>
+                <div class="stat-label">Processing</div>
             </div>
         </div>
     </div>
-    
-    <div class="col-3">
-        <div class="card shadow-sm border-success h-100">
-            <div class="card-body text-center p-2">
-                <i class="bi bi-award-fill text-success" style="font-size: 1.5rem;"></i>
-                <h4 class="mt-1 mb-0">{{ ready_certificates }}</h4>
-                <small class="text-muted d-block" style="font-size: 0.75rem;">Ready</small>
+    <div class="col-6 col-md-3">
+        <div class="card stat-tile">
+            <div class="card-body">
+                <div class="stat-icon success"><i class="bi bi-award-fill"></i></div>
+                <h4>{{ ready_certificates }}</h4>
+                <div class="stat-label">Ready</div>
             </div>
         </div>
     </div>
@@ -114,35 +109,35 @@
 
 <!-- Quick Actions -->
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h5 class="card-title mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-tone tone-primary">
+                <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 mb-2">
-                        <a href="{% url 'applications:staff_list' %}" class="btn btn-outline-primary w-100">
-                            <i class="bi bi-list-check"></i> All Applications
+            <div class="card-body quick-actions">
+                <div class="row g-2">
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'applications:staff_list' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-list-check"></i> All Applica..
                         </a>
                     </div>
                     {% if can_confirm_payments %}
-                    <div class="col-md-3 mb-2">
-                        <a href="{% url 'applications:staff_list' %}?status=submitted" class="btn btn-outline-warning w-100">
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'applications:staff_list' %}?status=submitted" class="btn btn-outline-primary">
                             <i class="bi bi-cash-coin"></i> Pending Payments
                         </a>
                     </div>
                     {% endif %}
                     {% if can_manage_certificates %}
-                    <div class="col-md-3 mb-2">
-                        <a href="{% url 'applications:staff_list' %}?status=payment_confirmed" class="btn btn-outline-success w-100">
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'applications:staff_list' %}?status=payment_confirmed" class="btn btn-outline-primary">
                             <i class="bi bi-award"></i> Manage Certificates
                         </a>
                     </div>
                     {% endif %}
-                    <div class="col-md-3 mb-2">
-                        <a href="{% url 'announcements:list' %}" class="btn btn-outline-info w-100">
-                            <i class="bi bi-megaphone"></i> Announcements
+                    <div class="col-6 col-md-3">
+                        <a href="{% url 'announcements:list' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-megaphone"></i> Announce
                         </a>
                     </div>
                 </div>
@@ -154,14 +149,14 @@
 <!-- Pending Payment Confirmations -->
 {% if can_confirm_payments and pending_payment_list %}
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="card-title mb-0"><i class="bi bi-exclamation-triangle"></i> Pending Payment Confirmations</h5>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-tone tone-warning">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Pending Payment Confirmations</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table dash-table mb-0">
                         <thead>
                             <tr>
                                 <th>Applicant</th>
@@ -172,16 +167,14 @@
                         </thead>
                         <tbody>
                             {% for payment in pending_payment_list %}
-                            <tr onclick="window.location='{% url 'applications:staff_detail' payment.application.pk %}'" style="cursor: pointer;">
+                            <tr class="row-link" onclick="window.location='{% url 'applications:staff_detail' payment.application.pk %}'">
                                 <td>
-                                    <strong>{{ payment.application.full_name }}</strong>
+                                    <a href="{% url 'applications:staff_detail' payment.application.pk %}" class="fw-semibold text-decoration-none text-reset">{{ payment.application.full_name }}</a>
                                     <small class="d-block d-md-none text-muted">{{ payment.reference_number }}</small>
                                 </td>
                                 <td class="d-none d-md-table-cell">{{ payment.application.user.email }}</td>
                                 <td class="d-none d-sm-table-cell"><code>{{ payment.reference_number }}</code></td>
-                                <td class="d-none d-sm-table-cell">
-                                    <small>{{ payment.created_at|date:"M d, Y" }}</small>
-                                </td>
+                                <td class="d-none d-sm-table-cell"><small>{{ payment.created_at|date:"M d, Y" }}</small></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -195,15 +188,15 @@
 
 <!-- Recent Applications -->
 <div class="row">
-    <div class="col-md-12">
-        <div class="card shadow">
-            <div class="card-header bg-info text-white">
-                <h5 class="card-title mb-0"><i class="bi bi-clock-history"></i> Recent Applications</h5>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header card-header-tone tone-info">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent Applications</h5>
             </div>
             <div class="card-body">
                 {% if recent_applications %}
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table dash-table mb-0">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -214,31 +207,24 @@
                         </thead>
                         <tbody>
                             {% for app in recent_applications %}
-                            <tr onclick="window.location='{% url 'applications:staff_detail' app.pk %}'" style="cursor: pointer;">
+                            <tr class="row-link" onclick="window.location='{% url 'applications:staff_detail' app.pk %}'">
                                 <td>
-                                    <strong>{{ app.full_name }}</strong>
+                                    <a href="{% url 'applications:staff_detail' app.pk %}" class="fw-semibold text-decoration-none text-reset">{{ app.full_name }}</a>
                                     <small class="d-block d-md-none text-muted">{{ app.course }}</small>
                                 </td>
                                 <td class="d-none d-md-table-cell">{{ app.course }}</td>
-                                <td>
-                                    <span class="status-badge status-{{ app.status }}" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
-                                        {{ app.get_status_display }}
-                                    </span>
-                                </td>
-                                <td class="d-none d-sm-table-cell">
-                                    <small>{{ app.created_at|date:"M d, Y" }}</small>
-                                </td>
+                                <td><span class="status-badge status-{{ app.status }}">{{ app.get_status_display }}</span></td>
+                                <td class="d-none d-sm-table-cell"><small>{{ app.created_at|date:"M d, Y" }}</small></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 {% else %}
-                <p class="text-muted text-center">No applications yet.</p>
+                <p class="text-muted text-center py-4 mb-0">No applications yet.</p>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-

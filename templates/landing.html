@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Welcome - IET Membership System{% endblock %}
+{% block title %}IET UDSM Student Chapter - Become That Engineer{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Carousel optimizations for mobile */
+    /* Carousel/Slideshow */
     .highlights-carousel {
-        border-radius: 1rem;
+        border-radius: var(--iet-radius-lg);
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 30px var(--iet-shadow-hover);
+        margin-bottom: 3rem;
     }
     
     .carousel-item {
-        height: 400px;
-        background: #f8f9fa;
+        height: 350px;
+        background: var(--iet-neutral-light);
     }
     
     .carousel-item img {
@@ -24,47 +25,37 @@
     }
     
     .carousel-caption {
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 1.5rem 1rem;
+        padding: 2rem 1.5rem;
         border-radius: 0;
     }
     
     .carousel-caption h5 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        color: var(--iet-white);
     }
     
     .carousel-caption p {
-        font-size: 0.9rem;
+        font-size: 1rem;
         margin-bottom: 0;
         text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        color: rgba(255,255,255,0.9);
     }
     
-    /* Mobile optimizations */
     @media (max-width: 576px) {
-        .carousel-item {
-            height: 300px;
-        }
-        
-        .carousel-caption {
-            padding: 1rem 0.75rem;
-        }
-        
-        .carousel-caption h5 {
-            font-size: 0.95rem;
-        }
-        
-        .carousel-caption p {
-            font-size: 0.8rem;
-        }
+        .carousel-item { height: 300px; }
+        .carousel-caption { padding: 1.5rem 1rem; }
+        .carousel-caption h5 { font-size: 1.2rem; }
+        .carousel-caption p { font-size: 0.9rem; }
     }
     
-    /* Control buttons */
     .carousel-control-prev,
     .carousel-control-next {
         width: 8%;
@@ -76,157 +67,1335 @@
         opacity: 1;
     }
     
-    /* Indicators */
     .carousel-indicators [data-bs-target] {
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
         border-radius: 50%;
-        margin: 0 5px;
+        margin: 0 6px;
+        background-color: var(--iet-primary);
+    }
+    
+    .carousel-indicators [data-bs-target].active {
+        background-color: var(--iet-primary-dark);
+    }
+    
+    /* Override base.html main padding for landing page */
+    main {
+        padding: 0 !important;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, var(--iet-ink) 0%, var(--iet-ink-light) 100%);
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+    
+    .hero-bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.5;
+        z-index: 1;
+    }
+    
+    .hero-bg-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(192, 41, 59, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(192, 41, 59, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(192, 41, 59, 0.08) 0%, transparent 30%);
+        animation: pulse 8s ease-in-out infinite;
+        z-index: 2;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        color: var(--iet-white);
+        max-width: 800px;
+        padding-left: 5%;
+        margin-top: 1rem;
+    }
+    
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        background: linear-gradient(135deg, var(--iet-white) 0%, var(--iet-secondary-light) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2.5rem;
+        max-width: 650px;
+        line-height: 1.8;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .hero-btn-primary {
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        border: none;
+        padding: 0.9rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: var(--iet-radius-md);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(192, 41, 59, 0.4);
+        max-width: 280px;
+    }
+    
+    .hero-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 25px rgba(192, 41, 59, 0.4);
+    }
+    
+    .hero-btn-secondary {
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        color: var(--iet-white);
+        padding: 0.9rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: var(--iet-radius-md);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        max-width: 280px;
+    }
+    
+    .hero-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--iet-white);
+    }
+    
+    @media (max-width: 991px) {
+        .hero-title { font-size: 3rem; }
+        .hero-section { min-height: auto; padding: 4rem 0; }
+        .hero-content { max-width: 100%; padding-left: 0; }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-title { font-size: 2.2rem; }
+        .hero-subtitle { font-size: 1.05rem; }
+        .hero-buttons { flex-direction: column; align-items: center; }
+        .hero-btn-primary, .hero-btn-secondary { width: auto; max-width: 250px; }
+        .hero-section { padding: 3rem 0; }
+        .hero-content { padding-left: 0; text-align: center; }
+    }
+    
+    /* Section Styling */
+    .section-padding {
+        padding: 3rem 0;
+    }
+    
+    .section-title {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--iet-text-primary);
+        margin-bottom: 1rem;
+        position: relative;
+    }
+    
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        margin-top: 1rem;
+        border-radius: 2px;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--iet-text-secondary);
+        max-width: 700px;
+        margin-bottom: 3rem;
+    }
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .section-padding {
+            padding: 2rem 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+        }
+        
+        .col-lg-10 {
+            max-width: 100%;
+            flex: 0 0 100%;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .section-padding {
+            padding: 1.5rem 0;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+        }
+        
+        .section-subtitle {
+            font-size: 0.95rem;
+        }
+    }
+    
+    /* About Section */
+    .about-section {
+        background: var(--iet-white);
+    }
+    
+    .about-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--iet-text-primary);
+    }
+    
+    /* Purpose Section */
+    .purpose-section {
+        background: linear-gradient(135deg, var(--iet-neutral-light) 0%, var(--iet-secondary-light) 100%);
+    }
+    
+    .purpose-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: var(--iet-radius-lg);
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 25px rgba(192, 41, 59, 0.2);
+    }
+    
+    .purpose-icon i {
+        font-size: 2rem;
+        color: var(--iet-white);
+    }
+    
+    .purpose-item {
+        text-align: center;
+        padding: 2rem;
+        background: var(--iet-white);
+        border-radius: var(--iet-radius-lg);
+        box-shadow: 0 4px 15px var(--iet-shadow);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    @media (max-width: 768px) {
+        .purpose-icon {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .purpose-icon i {
+            font-size: 1.5rem;
+        }
+        
+        .purpose-item {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .purpose-icon {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .purpose-icon i {
+            font-size: 1.25rem;
+        }
+        
+        .purpose-item {
+            padding: 1.25rem;
+        }
+    }
+    
+    .purpose-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px var(--iet-shadow-hover);
+    }
+    
+    .purpose-item h4 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--iet-text-primary);
+    }
+    
+    .purpose-item p {
+        color: var(--iet-text-secondary);
+        font-size: 0.95rem;
+    }
+    
+    /* Activities Grid */
+    .activities-section {
+        background: var(--iet-white);
+    }
+    
+    .activity-card {
+        border: 1px solid var(--iet-border);
+        border-radius: var(--iet-radius-lg);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: var(--iet-white);
+        box-shadow: 0 4px 15px var(--iet-shadow);
+    }
+    
+    .activity-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 35px var(--iet-shadow-hover);
+    }
+    
+    .activity-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: var(--iet-radius-md);
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .activity-icon i {
+        font-size: 1.5rem;
+        color: var(--iet-white);
+    }
+    
+    .activity-card h5 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--iet-text-primary);
+    }
+    
+    .activity-card p {
+        color: var(--iet-text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .activity-icon i {
+            font-size: 1.25rem;
+        }
+        
+        .activity-card h5 {
+            font-size: 1.1rem;
+        }
+        
+        .activity-card p {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .activity-icon i {
+            font-size: 1.1rem;
+        }
+        
+        .activity-card h5 {
+            font-size: 1rem;
+        }
+        
+        .activity-card p {
+            font-size: 0.8rem;
+        }
+    }
+    
+    /* Featured Activities */
+    .featured-section {
+        background: var(--iet-neutral-light);
+    }
+    
+    .featured-card {
+        border: none;
+        border-radius: var(--iet-radius-lg);
+        overflow: hidden;
+        background: var(--iet-white);
+        box-shadow: 0 4px 20px var(--iet-shadow);
+        transition: all 0.3s ease;
+    }
+    
+    .featured-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px var(--iet-shadow-hover);
+    }
+    
+    .featured-image {
+        height: 200px;
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .featured-image i {
+        font-size: 4rem;
+        color: var(--iet-white);
+        opacity: 0.3;
+    }
+    
+    .featured-card h5 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--iet-text-primary);
+    }
+    
+    .featured-card p {
+        color: var(--iet-text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    
+    /* Testimonials */
+    .testimonials-section {
+        background: var(--iet-white);
+    }
+    
+    .testimonial-card {
+        background: var(--iet-neutral-light);
+        border-radius: var(--iet-radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--iet-border);
+        position: relative;
+    }
+    
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 1rem;
+        left: 1.5rem;
+        font-size: 4rem;
+        color: var(--iet-primary);
+        opacity: 0.2;
+        font-family: var(--font-display);
+        line-height: 1;
+    }
+    
+    .testimonial-text {
+        font-style: italic;
+        color: var(--iet-text-primary);
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--iet-white);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+    
+    .testimonial-name {
+        font-family: var(--font-display);
+        font-weight: 600;
+        color: var(--iet-text-primary);
+    }
+    
+    .testimonial-role {
+        font-size: 0.85rem;
+        color: var(--iet-text-secondary);
+    }
+    
+    /* Benefits Section */
+    .benefits-section {
+        background: var(--iet-neutral-light);
+    }
+    
+    .benefit-card {
+        background: var(--iet-white);
+        border-radius: var(--iet-radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--iet-border);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px var(--iet-shadow-hover);
+        border-color: var(--iet-primary);
+    }
+    
+    .benefit-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: var(--iet-radius-md);
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .benefit-icon i {
+        font-size: 1.25rem;
+        color: var(--iet-white);
+    }
+    
+    .benefit-card h5 {
+        font-family: var(--font-display);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--iet-text-primary);
+    }
+    
+    .benefit-card p {
+        color: var(--iet-text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    /* Achievements Section */
+    .achievements-section {
+        background: var(--iet-white);
+    }
+    
+    .achievement-card {
+        background: var(--iet-neutral-light);
+        border-radius: var(--iet-radius-lg);
+        padding: 1.5rem;
+        border-left: 4px solid var(--iet-primary);
+        margin-bottom: 1rem;
+    }
+    
+    .achievement-year {
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        color: var(--iet-primary);
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+    
+    .achievement-title {
+        font-family: var(--font-display);
+        font-weight: 600;
+        color: var(--iet-text-primary);
+        margin-bottom: 0.25rem;
+    }
+    
+    .achievement-desc {
+        font-size: 0.9rem;
+        color: var(--iet-text-secondary);
+    }
+    
+    /* FAQ Section */
+    .faq-section {
+        background: var(--iet-neutral-light);
+    }
+    
+    .accordion-item {
+        border: 1px solid var(--iet-border);
+        border-radius: var(--iet-radius-md) !important;
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+    
+    .accordion-button {
+        font-family: var(--font-display);
+        font-weight: 600;
+        color: var(--iet-text-primary);
+        background: var(--iet-white);
+        padding: 1.25rem;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background: var(--iet-secondary-light);
+        color: var(--iet-primary-dark);
+        box-shadow: none;
+    }
+    
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--iet-primary);
+    }
+    
+    .accordion-body {
+        background: var(--iet-white);
+        color: var(--iet-text-secondary);
+        line-height: 1.7;
+        padding: 1.25rem;
+    }
+    
+    /* Achievements Slider Section */
+    .achievements-slider-section {
+        background: var(--iet-white);
+    }
+    
+    .achievement-slider-card {
+        border: none;
+        border-radius: var(--iet-radius-lg);
+        overflow: hidden;
+        background: var(--iet-white);
+        box-shadow: 0 8px 30px var(--iet-shadow-hover);
+    }
+    
+    .achievement-slide {
+        height: 400px;
+        position: relative;
+    }
+    
+    .achievement-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .achievement-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+        padding: 2.5rem 2rem;
+        color: var(--iet-white);
+    }
+    
+    .achievement-year {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        color: var(--iet-primary-light);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .achievement-title {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: var(--iet-white);
+        text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    
+    .achievement-desc {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.95);
+        line-height: 1.7;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    @media (max-width: 768px) {
+        .achievement-slide { height: 350px; }
+        .achievement-overlay { padding: 2rem 1.5rem; }
+        .achievement-title { font-size: 1.3rem; }
+        .achievement-desc { font-size: 0.9rem; }
+    }
+    
+    @media (max-width: 576px) {
+        .achievement-slide { height: 300px; }
+        .achievement-overlay { padding: 1.5rem 1rem; }
+        .achievement-title { font-size: 1.15rem; }
+        .achievement-desc { font-size: 0.85rem; }
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--iet-ink) 0%, var(--iet-ink-light) 100%);
+        color: var(--iet-white);
+        text-align: center;
+    }
+    
+    .cta-section .section-title {
+        color: var(--iet-white);
+    }
+    
+    .cta-section .section-title::after {
+        background: linear-gradient(90deg, var(--iet-primary) 0%, var(--iet-primary-light) 100%);
+        margin: 1rem auto 0;
+    }
+    
+    .cta-section .section-subtitle {
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0 auto 2rem;
+    }
+    
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* Scroll Animations */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .fade-in-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    .fade-in-left.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .fade-in-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    
+    .fade-in-right.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .scale-in {
+        opacity: 0;
+        transform: scale(0.9);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    .scale-in.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--iet-primary) 0%, var(--iet-primary-dark) 100%);
+        color: var(--iet-white);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 15px rgba(192, 41, 59, 0.4);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .back-to-top:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(192, 41, 59, 0.5);
+    }
+    
+    @media (max-width: 576px) {
+        .back-to-top {
+            bottom: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+        }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+        .fade-in {
+            opacity: 1;
+            transform: none;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="text-center mb-4">
-          <h1 class="display-4 fw-bold text-primary">
-                Institution of Engineers Tanzania
-            </h1>
-            
-        </div>
-
-        <!-- Highlights Carousel -->
-        <div id="highlightsCarousel" class="carousel slide highlights-carousel mb-5" data-bs-ride="carousel" data-bs-interval="5000">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="IET Workshop">
-                    <div class="carousel-caption">
-                        <h5>Hands-On Workshops</h5>
-                        <p>Participate in practical engineering workshops and gain real-world experience</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'highlights/seminar.jpg' %}" class="d-block w-100" alt="IET Seminar">
-                    <div class="carousel-caption">
-                        <h5>Industry Seminars</h5>
-                        <p>Learn from industry experts and stay updated with latest engineering trends</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'highlights/conference.jpg' %}" class="d-block w-100" alt="IET Conference">
-                    <div class="carousel-caption">
-                        <h5>Professional Conferences</h5>
-                        <p>Connect with fellow engineers and build lasting professional relationships</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static 'highlights/industrial visit.jpg' %}" class="d-block w-100" alt="Industrial Visit">
-                    <div class="carousel-caption">
-                        <h5>Industrial Visits</h5>
-                        <p>Experience real-world engineering applications through organized industrial visits</p>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <div class="card shadow-lg border-0">
-            <div class="card-body p-5">
-                <h2 class="card-title mb-4">About IET UDSM</h2>
-                <p class="card-text">
-                    The Institution of Engineers Tanzania (IET) is a professional body for engineers 
-                    in Tanzania. We provide a platform for engineering students and professionals to 
-                    connect, learn, and grow together.
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-bg-image" id="heroBgImage" data-bg-image="{% static 'backgorund_woman.webp' %}"></div>
+    <div class="hero-bg-pattern"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 col-sm-12 hero-content">
+                <h1 class="hero-title">Become That Engineer.</h1>
+                <p class="hero-subtitle">
+                    At IET UDSM Student Chapter, we bridge the gap between engineering education and professional practice by equipping students with knowledge, exposure, opportunities, and meaningful connections.
                 </p>
-                
-                <h3 class="mt-4 mb-3">Why Join IET?</h3>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="text-center">
-                            <i class="bi bi-award-fill text-primary" style="font-size: 3rem;"></i>
-                            <h5 class="mt-2">Professional Certification</h5>
-                            <p>Get recognized for your engineering expertise</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="text-center">
-                            <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
-                            <h5 class="mt-2">Networking</h5>
-                            <p>Connect with fellow engineers and professionals</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="text-center">
-                            <i class="bi bi-lightbulb-fill text-primary" style="font-size: 3rem;"></i>
-                            <h5 class="mt-2">Workshops & Seminars</h5>
-                            <p>Opportunities to attend practical workshops and seminars for hands-on experience and industry exposure</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center mt-5">
-                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg px-5">
-                        <i class="bi bi-person-plus"></i> Apply for Membership
+                <div class="hero-buttons">
+                    <a href="{% url 'accounts:signup' %}" class="btn hero-btn-primary">
+                        <i class="bi bi-person-plus me-2"></i> Apply for Membership
+                    </a>
+                    <a href="#activities" class="btn hero-btn-secondary">
+                        <i class="bi bi-compass me-2"></i> Explore Our Activities
                     </a>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-info-circle"></i> Membership Process</h5>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item">Create an account</li>
-                            <li class="list-group-item">Fill out the application form</li>
-                            <li class="list-group-item">Pay the registration fee</li>
-                            <li class="list-group-item">Wait for approval</li>
-                            <li class="list-group-item">Receive your certificate</li>
-                        </ol>
+<!-- Back to Top Button -->
+<button id="backToTopBtn" class="back-to-top" aria-label="Back to top">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<!-- About Section -->
+<section class="section-padding about-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title">About IET UDSM</h2>
+                <p class="section-subtitle">Who we are and why we exist</p>
+                <div class="about-content fade-in-left">
+                    <p class="mb-4">
+                        The Institution of Engineers Tanzania (IET) UDSM Student Chapter is a community dedicated to preparing engineering students for successful professional careers.
+                    </p>
+                    <p class="mb-4">
+                        We believe that becoming an engineer is more than earning a degree. It requires practical exposure, professional ethics, leadership, networking, innovation, and continuous learning.
+                    </p>
+                    <p>
+                        Our mission is to bridge the gap between university education and the engineering profession by creating opportunities that empower students long before graduation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Highlights Carousel -->
+<section class="section-padding" style="background: var(--iet-white);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 fade-in">
+                <div id="highlightsCarousel" class="carousel slide highlights-carousel" data-bs-ride="carousel" data-bs-interval="5000">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="IET Workshop">
+                            <div class="carousel-caption">
+                                <h5>Hands-On Workshops</h5>
+                                <p>Participate in practical engineering workshops and gain real-world experience</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'highlights/seminar.jpg' %}" class="d-block w-100" alt="IET Seminar">
+                            <div class="carousel-caption">
+                                <h5>Industry Seminars</h5>
+                                <p>Learn from industry experts and stay updated with latest engineering trends</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'highlights/conference.jpg' %}" class="d-block w-100" alt="IET Conference">
+                            <div class="carousel-caption">
+                                <h5>Professional Conferences</h5>
+                                <p>Connect with fellow engineers and build lasting professional relationships</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'highlights/industrial visit.jpg' %}" class="d-block w-100" alt="Industrial Visit">
+                            <div class="carousel-caption">
+                                <h5>Industrial Visits</h5>
+                                <p>Experience real-world engineering applications through organized industrial visits</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Purpose Section -->
+<section class="section-padding purpose-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h2 class="section-title">Our Purpose</h2>
+                <p class="section-subtitle mx-auto">We help students Become <strong>That Engineer</strong>—competent, innovative, ethical, and impactful.</p>
+            </div>
+        </div>
+        <div class="row g-4 mt-4">
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h4>Discover Opportunities</h4>
+                    <p>Access internships, scholarships, conferences, and career opportunities</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4>Build Confidence</h4>
+                    <p>Develop professional confidence through practical experiences</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h4>Learn Beyond Classroom</h4>
+                    <p>Gain knowledge that extends beyond traditional education</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                    <h4>Leadership Skills</h4>
+                    <p>Lead projects, organize events, and build leadership capabilities</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h4>Industrial Exposure</h4>
+                    <p>Visit industries and understand real-world engineering applications</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="purpose-item">
+                    <div class="purpose-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h4>Professional Network</h4>
+                    <p>Connect with experienced engineers and industry leaders</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <p class="lead" style="color: var(--iet-primary-dark); font-weight: 600;">
+                Every programme we organize is designed to help our members become <strong>That Engineer</strong>.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- What We Do Section -->
+<section class="section-padding activities-section fade-in" id="activities">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h2 class="section-title">What We Do</h2>
+                <p class="section-subtitle mx-auto">Comprehensive programmes designed to shape competent engineers</p>
+            </div>
+        </div>
+        <div class="row g-4 mt-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <h5>Technical Workshops</h5>
+                    <p>Hands-on practical workshops covering emerging technologies, software tools, and essential engineering skills to prepare students for industry demands.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-building-exclamation"></i>
+                    </div>
+                    <h5>Industrial Visits</h5>
+                    <p>Organized visits to leading engineering companies and manufacturing facilities to observe real-world applications of engineering principles.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-presentation"></i>
+                    </div>
+                    <h5>Engineering Seminars</h5>
+                    <p>Regular seminars featuring industry experts and thought leaders sharing insights on current trends, challenges, and opportunities in engineering.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-lightbulb-fill"></i>
+                    </div>
+                    <h5>Innovation Competitions</h5>
+                    <p>Engineering challenges and competitions that encourage creative problem-solving and innovative approaches to real-world technical problems.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h5>Networking Events</h5>
+                    <p>Opportunities to connect with fellow students, alumni, and industry professionals to build lasting relationships for career growth.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-card p-4 scale-in">
+                    <div class="activity-icon">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <h5>Engineering Conferences</h5>
+                    <p>Participation in national and regional engineering conferences to expand knowledge, present research, and engage with the broader engineering community.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Testimonials Section -->
+<section class="section-padding testimonials-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h2 class="section-title">Success Stories</h2>
+                <p class="section-subtitle mx-auto">Hear from our members, alumni, and partners</p>
+            </div>
+        </div>
+        <div class="row g-4 mt-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"IET exposed me to opportunities I never imagined. The leadership experience and professional network I built continue to shape my engineering career today."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JM</div>
+                        <div>
+                            <div class="testimonial-name">John Mushi</div>
+                            <div class="testimonial-role">Former Chairperson, Class of 2020</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-question-circle"></i> Contact Us</h5>
-                        <p>If you have any questions about the membership process, feel free to reach out to us.</p>
-                        
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-geo-alt-fill text-primary me-2"></i>
-                            <div>
-                                <strong>Location:</strong><br>
-                                <small>University of Dar es Salaam, CoET</small>
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The mentorship programme connected me with industry professionals who guided my career path. I'm now working at a leading engineering firm thanks to IET."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SK</div>
+                        <div>
+                            <div class="testimonial-name">Sarah Kimaro</div>
+                            <div class="testimonial-role">Alumni, Civil Engineer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Technical workshops gave me practical skills that textbooks couldn't provide. IET truly bridges the gap between academia and industry."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">DM</div>
+                        <div>
+                            <div class="testimonial-name">David Mbwana</div>
+                            <div class="testimonial-role">Current Member, Year 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Join Section -->
+<section class="section-padding benefits-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h2 class="section-title">Why Join IET?</h2>
+                <p class="section-subtitle mx-auto">Real benefits that transform your engineering journey</p>
+            </div>
+        </div>
+        <div class="row g-4 mt-4">
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="bi bi-building"></i>
+                    </div>
+                    <h5>Professional Exposure</h5>
+                    <p>Meet experienced engineers and industry leaders who can guide your career.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
+                    <h5>Career Readiness</h5>
+                    <p>Develop practical skills that employers value in today's competitive market.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="bi bi-crown"></i>
+                    </div>
+                    <h5>Leadership</h5>
+                    <p>Lead projects, organize events, and build confidence in your abilities.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h5>Networking</h5>
+                    <p>Connect with students, alumni, and professionals across the engineering community.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h5>Innovation</h5>
+                    <p>Participate in competitions and engineering projects that challenge your creativity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements Slider Section -->
+<section class="section-padding achievements-slider-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h2 class="section-title">Our Achievements</h2>
+                <p class="section-subtitle mx-auto">Celebrating our milestones and successes</p>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div id="achievementsCarousel" class="carousel slide achievement-slider-card" data-bs-ride="carousel" data-bs-interval="4000">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Achievement 1"></button>
+                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="1" aria-label="Achievement 2"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="achievement-slide">
+                                <img src="{% static '1746946512912 (1).jpg' %}" class="d-block w-100" alt="Achievement 1">
+                                <div class="achievement-overlay">
+                                    <div class="achievement-year">2024</div>
+                                    <div class="achievement-title">Youth Expo 2024 - First Runner Up</div>
+                                    <div class="achievement-desc">Our team achieved First Runner Up position at the prestigious Youth Expo 2024 competition, showcasing innovative engineering solutions and excellence in project presentation.</div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-envelope-fill text-primary me-2"></i>
-                            <div>
-                                <strong>Email:</strong><br>
-                                <a href="mailto:udsmiet@gmail.com" class="text-decoration-none">udsmiet@gmail.com</a>
+                        <div class="carousel-item">
+                            <div class="achievement-slide">
+                                <img src="{% static '1746946512912 (2).jpg' %}" class="d-block w-100" alt="Achievement 2">
+                                <div class="achievement-overlay">
+                                    <div class="achievement-year">2024</div>
+                                    <div class="achievement-title">Engineering Exhibition at UDSM New Library</div>
+                                    <div class="achievement-desc">Successfully participated in organizing a major engineering exhibition event at the newly opened UDSM library, featuring innovative projects from different Universities and industry professionals.</div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-telephone-fill text-primary me-2"></i>
-                            <div>
-                                <strong>Phone:</strong><br>
-                                <a href="tel:+255614021404" class="text-decoration-none">+255 614 021 404</a>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#achievementsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#achievementsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section-padding faq-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle mx-auto">Common questions about IET UDSM membership</p>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Who can join IET UDSM?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Any engineering student at the University of Dar es Salaam can join IET UDSM Student Chapter. We welcome students from all engineering disciplines and year levels.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                How do I become a member?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Simply create an account, fill out the application form, pay the registration fee, and wait for approval. The process typically takes 3-5 business days.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Is membership limited to engineering students?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                While our primary focus is on engineering students, we welcome anyone with an interest in engineering and technology to participate in our events and activities.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What are the membership fees?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                The annual membership fee is TZS 10,000 for students. This fee covers access to all events, workshops, and membership benefits for the entire academic year.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                What opportunities will I receive?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Members receive access to technical workshops, industrial visits, networking events, mentorship programmes, internship opportunities, and invitations to professional conferences.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                How long does approval take?
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Membership approval typically takes 3-5 business days after payment confirmation. You will receive an email notification once your application is approved.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                How do I participate in events?
+                            </button>
+                        </h2>
+                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                As a member, you'll receive notifications about upcoming events via email and our communication channels. Simply register for events you're interested in through our platform.
                             </div>
                         </div>
                     </div>
@@ -234,7 +1403,106 @@
             </div>
         </div>
     </div>
-</div>
+</section>
+
+
+<!-- CTA Section -->
+<section class="section-padding cta-section fade-in">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title">Ready to Become That Engineer?</h2>
+                <p class="section-subtitle">Join a community committed to developing competent, ethical, innovative, and impactful engineers.</p>
+                <div class="cta-buttons">
+                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-person-plus me-2"></i> Apply for Membership
+                    </a>
+                    <a href="mailto:udsmiet@gmail.com" class="btn btn-outline-light btn-lg px-5">
+                        <i class="bi bi-envelope me-2"></i> Contact Us
+                    </a>
+                </div>
+                <div class="contact-info mt-4">
+                    <p class="mb-2">
+                        <i class="bi bi-telephone me-2"></i>
+                        <a href="tel:+255614021404" class="text-white text-decoration-none">0614021404</a>
+                    </p>
+                    <p class="mb-0">
+                        <i class="bi bi-envelope me-2"></i>
+                        <a href="mailto:udsmiet@gmail.com" class="text-white text-decoration-none">udsmiet@gmail.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set hero background image from data attribute
+        const heroBgImage = document.getElementById('heroBgImage');
+        if (heroBgImage) {
+            const bgImageUrl = heroBgImage.getAttribute('data-bg-image');
+            if (bgImageUrl) {
+                heroBgImage.style.backgroundImage = "url('" + bgImageUrl + "')";
+            }
+        }
+        
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animation classes
+        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .scale-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Back to Top Button
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        // Scroll to top on click
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
 
 
