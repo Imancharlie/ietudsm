@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'dashboard',
     'announcements',
     'exports',
+    'system_config',
 ]
 
 MIDDLEWARE = [

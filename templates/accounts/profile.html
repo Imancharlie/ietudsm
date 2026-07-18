@@ -92,19 +92,28 @@
                         <div class="col-md-4"><strong>Member Since:</strong></div>
                         <div class="col-md-8">{{ application.created_at|date:"F d, Y" }}</div>
                     </div>
-                    
+                    {% if application.status == 'draft' %}
+        <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            <h5><i class="bi bi-pencil-square"></i> Application Saved as Draft</h5>
+
+            <p class="mb-3">
+                Your application has been saved successfully, but it hasn't been submitted yet.
+                Continue completing the remaining sections so we can begin reviewing your membership application.
+            </p>
+
+            <a href="{% url 'applications:create' %}" class="btn btn-outline-primar">
+                <i class="bi bi-arrow-right-circle"></i>
+                Continue Application
+            </a>
+        </div>
+
+    {% endif %}
                     <div class="mt-4">
                         <a href="{% url 'accounts:settings' %}" class="btn btn-outline-primary">
                             <i class="bi bi-gear"></i> Account Settings
                         </a>
                     </div>
-                {% else %}
-                    <div class="alert alert-info">
-                        <p>You haven't completed your application yet.</p>
-                        <a href="{% url 'applications:create' %}" class="btn btn-primary">
-                            Complete Application
-                        </a>
-                    </div>
+                    
                 {% endif %}
             </div>
         </div>

@@ -44,6 +44,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('announcements/', include('announcements.urls')),
     path('exports/', include('exports.urls')),
+    path('admin-panel/', include('system_config.urls')),
     path('admin/backup-db/', download_database_backup, name='backup_database'),
 ]
 
