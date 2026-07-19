@@ -155,6 +155,12 @@ TREASURER_NAME = "IET Treasurer"  # Update with actual treasurer's name
 LIPA_NAMBA = "0698901097"  # Update with actual LIPA NAMBA
 LIPA_NAMBA_NAME = "IET UDSM"
 
+# Beem Africa SMS API
+BEEM_API_KEY = "2103db6a1c1f1485"
+BEEM_SECRET_KEY = "ZjA4OGJlZGEyZWQwZmYyNWJjN2QyYjc4MTIwNzYyMmViNTYxODI1ODJmZGQ5N2M4OGQ4Nzk4ZTA0MDBmMGJjMA=="
+BEEM_SENDER_ID = "MAGHETTONI"
+TREASURER_PHONE = "0614021404"  # Treasurer's phone number for SMS notifications
+
 # Custom Error Pages
 handler404 = 'iet_system.views.custom_404'
 handler500 = 'iet_system.views.custom_500'

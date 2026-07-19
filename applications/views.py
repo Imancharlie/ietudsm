@@ -144,6 +144,17 @@ def application_preview(request):
                     notification_type='general'
                 )
                 
+                # Send SMS to treasurer about new application
+                from services import send_sms
+                treasurer_phone = settings.TREASURER_PHONE
+                
+                sms_message = f"New IET Application Submitted!\nName: {application.full_name}\nCourse: {application.course}\nEmail: {application.email}\nPhone: {application.phone_number}\n\nPlease review the application and payment proof."
+                
+                # Send to treasurer's number from settings
+                send_sms(treasurer_phone, sms_message)
+                # Also send to the specific number 0614021404
+                send_sms("0614021404", sms_message)
+                
                 messages.success(request, 'Application submitted successfully! Staff will review your payment.')
                 return redirect('applications:status')
         elif 'edit_application' in request.POST:

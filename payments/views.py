@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.utils import timezone
+from django.conf import settings
 from .models import Payment
 from applications.models import Application, ApplicationStatus
-
+from services import send_sms
 
 @user_passes_test(lambda u: u.is_staff)
 def confirm_payment(request, pk):
@@ -29,6 +30,10 @@ def confirm_payment(request, pk):
         # Mark user as approved member
         application.user.is_approved_member = True
         application.user.save()
+        
+        # Send SMS to user welcoming them to IET UDSM (inactive for now)
+        # welcome_message = f"Welcome to the IET UDSM Student Chapter! Your payment has been received and you are now a member of IET. Your journey to becoming That Engineer begins now. Start building your professional CV if you don't have one yet, maintain an active LinkedIn profile, and take every opportunity to participate in IET workshops, projects, competitions, networking events, and leadership initiatives. Every experience shapes the engineer you'll become. Welcome to the family! Join our WhatsApp group: {settings.WHATSAPP_GROUP_LINK} #BEingThatEngineer"
+        # send_sms(application.phone_number, welcome_message)
         
         messages.success(request, f'Payment confirmed for {application.full_name}. User is now an approved member.')
         return redirect('applications:staff_detail', pk=application.pk)
