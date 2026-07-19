@@ -135,6 +135,17 @@ def application_preview(request):
                 request.user.has_completed_application = True
                 request.user.save()
                 
+                # Send SMS to treasurer about new application
+                from services import send_sms
+                treasurer_phone = settings.TREASURER_PHONE
+                
+                sms_message = f"New IET Registration Application Submitted!\nName: {application.full_name}\n Sender Name on the transaction: {payment_obj.sender_name}\n Course: {application.course}\nPhone: {application.phone_number}\n\nPlease review the application and confirm the payment if received."
+                
+                # Send to treasurer's number from settings
+                send_sms(treasurer_phone, sms_message)
+                # Also send to the specific number 0792267622
+                send_sms("0792267622", sms_message)
+                
                 # Create welcome notification for new member
                 from accounts.models import Notification
                 Notification.objects.create(
@@ -143,17 +154,6 @@ def application_preview(request):
                     message="Welcome to the IET UDSM Student Chapter! Your journey to becoming 'That Engineer' starts now. Remember to create a professional CV early, build your LinkedIn profile, and actively participate in IET activities. Every workshop, project, and leadership opportunity brings you closer to engineering excellence.",
                     notification_type='general'
                 )
-                
-                # Send SMS to treasurer about new application
-                from services import send_sms
-                treasurer_phone = settings.TREASURER_PHONE
-                
-                sms_message = f"New IET Application Submitted!\nName: {application.full_name}\nCourse: {application.course}\nEmail: {application.email}\nPhone: {application.phone_number}\n\nPlease review the application and payment proof."
-                
-                # Send to treasurer's number from settings
-                send_sms(treasurer_phone, sms_message)
-                # Also send to the specific number 0792267622
-                send_sms("0792267622", sms_message)
                 
                 messages.success(request, 'Application submitted successfully! Staff will review your payment.')
                 return redirect('applications:status')
