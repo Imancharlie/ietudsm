@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-change-this-in-production-!@#$%^&*()'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['ietudsm.co.tz','localhost','127.0.0.1']
 
@@ -106,9 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
+
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Dar_es_Salaam'
 
 USE_I18N = True
 
@@ -151,7 +152,7 @@ TREASURER_WHATSAPP = "+255763167686"  # Update with actual treasurer's WhatsApp 
 TREASURER_NAME = "IET Treasurer"  # Update with actual treasurer's name
 
 # LIPA NAMBA Payment Details
-LIPA_NAMBA = "06989001197"  # Update with actual LIPA NAMBA
+LIPA_NAMBA = "0698901097"  # Update with actual LIPA NAMBA
 LIPA_NAMBA_NAME = "IET UDSM"
 
 # Custom Error Pages
