@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}System Settings - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'system_config:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0"><i class="bi bi-gear"></i> System Settings</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <h5 class="mb-3">Treasurer Information</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-6">{{ form.treasurer_whatsapp|as_crispy_field }}</div>
+                        <div class="col-md-6">{{ form.treasurer_name|as_crispy_field }}</div>
+                    </div>
+                    
+                    <h5 class="mb-3">Payment Information</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-6">{{ form.lipa_namba|as_crispy_field }}</div>
+                        <div class="col-md-6">{{ form.lipa_namba_name|as_crispy_field }}</div>
+                    </div>
+                    
+                    <h5 class="mb-3">Contact Information</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-4">{{ form.contact_phone|as_crispy_field }}</div>
+                        <div class="col-md-4">{{ form.contact_email|as_crispy_field }}</div>
+                        <div class="col-md-4">{{ form.contact_whatsapp|as_crispy_field }}</div>
+                    </div>
+                    
+                    <h5 class="mb-3">Social Links</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-12">{{ form.whatsapp_group_link|as_crispy_field }}</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'system_config:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Save Settings
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

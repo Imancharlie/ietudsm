@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - IET System{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="mb-1"><i class="bi bi-gear-fill text-primary"></i> Admin Dashboard</h2>
+    <p class="text-muted mb-0">System configuration and management</p>
+</div>
+
+<!-- Statistics -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="display-4 text-primary">{{ total_users }}</div>
+                <div class="text-muted">Total Users</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="display-4 text-success">{{ total_applications }}</div>
+                <div class="text-muted">Applications</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="display-4 text-info">{{ total_staff }}</div>
+                <div class="text-muted">Staff Members</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="display-4 text-warning">{{ total_testimonials }}</div>
+                <div class="text-muted">Testimonials</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <a href="{% url 'system_config:settings' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-gear"></i> System Settings
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'system_config:testimonials' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-chat-quote"></i> Testimonials
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'system_config:achievements' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-trophy"></i> Achievements
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'system_config:highlights' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-images"></i> Highlights
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'system_config:staff' %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-people"></i> Staff Management
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Applications -->
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent Applications</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_applications %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in recent_applications %}
+                            <tr>
+                                <td>{{ app.full_name }}</td>
+                                <td>{{ app.course }}</td>
+                                <td><span class="badge bg-{{ app.status }}">{{ app.get_status_display }}</span></td>
+                                <td>{{ app.created_at|date:"M d, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4 mb-0">No applications yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

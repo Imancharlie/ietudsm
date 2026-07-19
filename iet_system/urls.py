@@ -11,6 +11,7 @@ from django.http import HttpResponse
 import os
 import shutil
 from datetime import datetime
+from .views import landing_page
 
 @login_required
 def download_database_backup(request):
@@ -36,7 +37,7 @@ def download_database_backup(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    path('', landing_page, name='landing'),
     path('accounts/', include('accounts.urls')),
     path('applications/', include('applications.urls')),
     path('payments/', include('payments.urls')),

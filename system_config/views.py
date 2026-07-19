@@ -8,8 +8,8 @@ from accounts.models import User as CustomUser, StaffRole
 
 
 def is_admin(user):
-    """Check if user is admin"""
-    return user.is_staff and user.staff_role == StaffRole.ADMIN
+    """Check if user is admin (superuser or chairperson)"""
+    return user.is_superuser or (user.is_staff and user.staff_role == StaffRole.CHAIRPERSON)
 
 
 @login_required

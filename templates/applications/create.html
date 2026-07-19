@@ -3,13 +3,39 @@
 
 {% block title %}Application Form - IET Membership{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+    /* Fix: header text wasn't standing out against bg-primary */
+    .card-header.bg-primary {
+        background-color: #837e71 !important;
+    }
+    .card-header.bg-primary .card-title,
+    .card-header.bg-primary .card-title i {
+        color: #ffffff !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        font-weight: 600;
+        letter-spacing: 0.3px;
+    }
+
+    /* Flatpickr styling tweaks */
+    .flatpickr-calendar.birthday-picker {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    #calculated_age {
+        background-color: #f8f9fa;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-lg-10 mx-auto">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-                <h3 class="card-title mb-0">
-                    <i class="bi bi-file-earmark-text"></i> Membership Application Form
+                <h3 class="card-title mb-0" style="color: var(--iet-primary);">
+                    <i class="bi bi-file-earmark-text" style="color: var(--iet-primary);"></i> Application Form
                 </h3>
             </div>
             <div class="card-body">
@@ -24,7 +50,7 @@
 
                 <form method="post" id="applicationForm">
                     {% csrf_token %}
-                    
+
                     <h4 class="mt-4 mb-3">1. Personal Information</h4>
                     <div class="row">
                         <div class="col-md-4">{{ form.first_name|as_crispy_field }}</div>
@@ -37,7 +63,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">{{ form.nationality|as_crispy_field }}</div>
-                        <div class="col-md-6">{{ form.date_of_birth|as_crispy_field }}</div>
+                        <div class="col-md-6">
+                            {{ form.date_of_birth|as_crispy_field }}
+                            <div class="form-text">
+                                Age: <input type="text" id="calculated_age" class="form-control form-control-sm d-inline-block" style="width: 120px;" readonly>
+                            </div>
+                        </div>
                     </div>
 
                     <h4 class="mt-4 mb-3">2. Address</h4>
@@ -62,9 +93,6 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <button type="submit" name="save_draft" class="btn btn-outline-secondary">
-                            <i class="bi bi-save"></i> Save as Draft
-                        </button>
                         <button type="submit" name="submit_application" class="btn btn-primary">
                             <i class="bi bi-check-circle"></i> Submit Application
                         </button>
@@ -77,36 +105,53 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const dobInput = document.getElementById('id_date_of_birth');
     const ageDisplay = document.getElementById('calculated_age');
-    
-    function calculateAge() {
-        const dob = new Date(dobInput.value);
-        if (!dobInput.value) {
+
+    function calculateAge(dateStr) {
+        if (!dateStr) {
             ageDisplay.value = '';
             return;
         }
-        
+
+        const dob = new Date(dateStr);
         const today = new Date();
         let age = today.getFullYear() - dob.getFullYear();
         const monthDiff = today.getMonth() - dob.getMonth();
-        
+
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
             age--;
         }
-        
+
         ageDisplay.value = age + ' years';
     }
-    
-    // Calculate age on page load if DOB is already filled
+
+    // Initialize Flatpickr with a friendly, jump-to-year picker
+    const fp = flatpickr(dobInput, {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "F j, Y",
+        maxDate: "today",
+        minDate: "1950-01-01",
+        // Dropdown month + typeable year input (no clicking through decades)
+        onReady: function(selectedDates, dateStr, instance) {
+            instance.calendarContainer.classList.add("birthday-picker");
+            if (dateStr) {
+                calculateAge(dateStr);
+            }
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            calculateAge(dateStr);
+        }
+    });
+
+    // Calculate age on page load if DOB is already filled (e.g. draft application)
     if (dobInput.value) {
-        calculateAge();
+        calculateAge(dobInput.value);
     }
-    
-    // Calculate age when DOB changes
-    dobInput.addEventListener('change', calculateAge);
 });
 </script>
 {% endblock %}

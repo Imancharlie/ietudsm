@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
+from system_config.models import SystemSettings
 
 
 @login_required
@@ -12,15 +13,22 @@ def profile(request):
     except:
         application = None
     
+    settings = SystemSettings.objects.first()
+    
     context = {
         'application': application,
+        'settings': settings,
     }
     return render(request, 'accounts/profile.html', context)
 
 
 def about_us(request):
     """About IET page"""
-    return render(request, 'accounts/about.html')
+    settings = SystemSettings.objects.first()
+    context = {
+        'settings': settings,
+    }
+    return render(request, 'accounts/about.html', context)
 
 
 @login_required

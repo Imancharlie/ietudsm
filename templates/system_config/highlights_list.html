@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Highlight Slides - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'system_config:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+    <a href="{% url 'system_config:highlight_create' %}" class="btn btn-primary float-end">
+        <i class="bi bi-plus-circle"></i> Add Highlight Slide
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0"><i class="bi bi-images"></i> Highlight Slides</h4>
+            </div>
+            <div class="card-body">
+                {% if highlights %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Status</th>
+                                <th>Order</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for highlight in highlights %}
+                            <tr>
+                                <td>{{ highlight.title }}</td>
+                                <td>{{ highlight.description|truncatewords:10 }}</td>
+                                <td>
+                                    {% if highlight.image %}
+                                        <img src="{{ highlight.image.url }}" alt="{{ highlight.title }}" style="max-width: 100px; max-height: 60px;">
+                                    {% else %}
+                                        <span class="text-muted">No image</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if highlight.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ highlight.order }}</td>
+                                <td>
+                                    <a href="{% url 'system_config:highlight_edit' highlight.pk %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'system_config:highlight_delete' highlight.pk %}" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4 mb-0">No highlight slides yet. <a href="{% url 'system_config:highlight_create' %}">Add one</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

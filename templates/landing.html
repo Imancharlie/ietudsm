@@ -951,40 +951,34 @@
             <div class="col-lg-10 fade-in">
                 <div id="highlightsCarousel" class="carousel slide highlights-carousel" data-bs-ride="carousel" data-bs-interval="5000">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        {% for highlight in highlights %}
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                        {% empty %}
+                        <button type="button" data-bs-target="#highlightsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Default Slide"></button>
+                        {% endfor %}
                     </div>
                     <div class="carousel-inner">
+                        {% for highlight in highlights %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            {% if highlight.image %}
+                            <img src="{{ highlight.image.url }}" class="d-block w-100" alt="{{ highlight.title }}">
+                            {% else %}
+                            <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="Default Highlight">
+                            {% endif %}
+                            <div class="carousel-caption">
+                                <h5>{{ highlight.title }}</h5>
+                                <p>{{ highlight.description }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
                         <div class="carousel-item active">
-                            <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="IET Workshop">
+                            <img src="{% static 'highlights/workshops.jpg' %}" class="d-block w-100" alt="Default Highlight">
                             <div class="carousel-caption">
                                 <h5>Hands-On Workshops</h5>
                                 <p>Participate in practical engineering workshops and gain real-world experience</p>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'highlights/seminar.jpg' %}" class="d-block w-100" alt="IET Seminar">
-                            <div class="carousel-caption">
-                                <h5>Industry Seminars</h5>
-                                <p>Learn from industry experts and stay updated with latest engineering trends</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'highlights/conference.jpg' %}" class="d-block w-100" alt="IET Conference">
-                            <div class="carousel-caption">
-                                <h5>Professional Conferences</h5>
-                                <p>Connect with fellow engineers and build lasting professional relationships</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'highlights/industrial visit.jpg' %}" class="d-block w-100" alt="Industrial Visit">
-                            <div class="carousel-caption">
-                                <h5>Industrial Visits</h5>
-                                <p>Experience real-world engineering applications through organized industrial visits</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#highlightsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -1152,42 +1146,24 @@
             </div>
         </div>
         <div class="row g-4 mt-4">
+            {% for testimonial in testimonials %}
             <div class="col-lg-4 col-md-6">
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Joining IET transformed my journey from being just an engineering student into a confident leader, mentor, and passionate advocate for the profession. Through IET, I gained invaluable leadership experience, professional networks, technical exposure, and opportunities that shaped my personal and career growth. If you're looking to grow beyond the classroom, IET is an ideal place for you."</p>
+                    <p class="testimonial-text">"{{ testimonial.content }}"</p>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar">EN</div>
+                        <div class="testimonial-avatar">{{ testimonial.avatar_initials }}</div>
                         <div>
-                            <div class="testimonial-name">Elisha Nsojo</div>
-                            <div class="testimonial-role">Former Chairperson, IET Student Chapter</div>
+                            <div class="testimonial-name">{{ testimonial.name }}</div>
+                            <div class="testimonial-role">{{ testimonial.role }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Every great engineer started with curiosity, grows through learning, and leads through service. Welcome to IET, a community dedicated to empowering engineers with knowledge, professional excellence, innovation, and lifelong connections. my journey of making a lasting impact started here"</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">SK</div>
-                        <div>
-                            <div class="testimonial-name">Eng. Joshua Komba</div>
-                            <div class="testimonial-role">Electrical Engineer (TL & SS Designer)</div>
-                        </div>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center text-muted">No testimonials available. Please check back later.</p>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Industrial site visits gave me practical skills that textbooks couldn't provide. IET truly bridges the gap between academia and industry."</p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">DM</div>
-                        <div>
-                            <div class="testimonial-name">David Mbwana</div>
-                            <div class="testimonial-role">Current Member, Year 3</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -1264,30 +1240,40 @@
             <div class="col-lg-10">
                 <div id="achievementsCarousel" class="carousel slide achievement-slider-card" data-bs-ride="carousel" data-bs-interval="4000">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Achievement 1"></button>
-                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="1" aria-label="Achievement 2"></button>
+                        {% for achievement in achievements %}
+                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Achievement {{ forloop.counter }}"></button>
+                        {% empty %}
+                        <button type="button" data-bs-target="#achievementsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="No Achievement"></button>
+                        {% endfor %}
                     </div>
                     <div class="carousel-inner">
+                        {% for achievement in achievements %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="achievement-slide">
+                                {% if achievement.image %}
+                                <img src="{{ achievement.image.url }}" class="d-block w-100" alt="{{ achievement.title }}">
+                                {% else %}
+                                <img src="{% static '1746946512912 (1).jpg' %}" class="d-block w-100" alt="Default Achievement">
+                                {% endif %}
+                                <div class="achievement-overlay">
+                                    <div class="achievement-year">{{ achievement.year }}</div>
+                                    <div class="achievement-title">{{ achievement.title }}</div>
+                                    <div class="achievement-desc">{{ achievement.title }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
                         <div class="carousel-item active">
                             <div class="achievement-slide">
-                                <img src="{% static '1746946512912 (1).jpg' %}" class="d-block w-100" alt="Achievement 1">
+                                <img src="{% static '1746946512912 (1).jpg' %}" class="d-block w-100" alt="Default Achievement">
                                 <div class="achievement-overlay">
                                     <div class="achievement-year">2024</div>
-                                    <div class="achievement-title">Youth Expo 2024 - First Runner Up</div>
-                                    <div class="achievement-desc">Our team achieved First Runner Up position at the prestigious Youth Expo 2024 competition, showcasing innovative engineering solutions and excellence in project presentation.</div>
+                                    <div class="achievement-title">No Achievements Available</div>
+                                    <div class="achievement-desc">Check back later for updates on our achievements.</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <div class="achievement-slide">
-                                <img src="{% static '1746946512912 (2).jpg' %}" class="d-block w-100" alt="Achievement 2">
-                                <div class="achievement-overlay">
-                                    <div class="achievement-year">2024</div>
-                                    <div class="achievement-title">Engineering Exhibition at UDSM New Library</div>
-                                    <div class="achievement-desc">Successfully participated in organizing a major engineering exhibition event at the newly opened UDSM library, featuring innovative projects from different Universities and industry professionals.</div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#achievementsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -1501,6 +1487,74 @@
                 }
             });
         });
+        
+        // LocalStorage caching for slideshow images
+        const CACHE_KEY = 'iet_slideshow_cache';
+        const CACHE_VERSION = 'v1';
+        const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+        
+        function cacheImages() {
+            const carouselImages = document.querySelectorAll('#highlightsCarousel img, #achievementsCarousel img');
+            const cacheData = {
+                version: CACHE_VERSION,
+                timestamp: Date.now(),
+                images: {}
+            };
+            
+            carouselImages.forEach((img, index) => {
+                if (img.src && !img.src.includes('data:')) {
+                    cacheData.images[index] = img.src;
+                }
+            });
+            
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+            } catch (e) {
+                console.log('LocalStorage caching failed:', e);
+            }
+        }
+        
+        function loadCachedImages() {
+            try {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (!cached) return false;
+                
+                const cacheData = JSON.parse(cached);
+                
+                // Check if cache is expired
+                if (Date.now() - cacheData.timestamp > CACHE_DURATION) {
+                    localStorage.removeItem(CACHE_KEY);
+                    return false;
+                }
+                
+                // Check if cache version matches
+                if (cacheData.version !== CACHE_VERSION) {
+                    localStorage.removeItem(CACHE_KEY);
+                    return false;
+                }
+                
+                // Apply cached images
+                const carouselImages = document.querySelectorAll('#highlightsCarousel img, #achievementsCarousel img');
+                carouselImages.forEach((img, index) => {
+                    if (cacheData.images[index]) {
+                        img.src = cacheData.images[index];
+                    }
+                });
+                
+                return true;
+            } catch (e) {
+                console.log('Loading cached images failed:', e);
+                return false;
+            }
+        }
+        
+        // Try to load cached images first
+        if (!loadCachedImages()) {
+            // If no cache, cache images after they load
+            window.addEventListener('load', function() {
+                setTimeout(cacheImages, 2000); // Wait 2 seconds for images to load
+            });
+        }
     });
 </script>
 {% endblock %}

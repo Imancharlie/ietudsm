@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Staff Management - Admin Panel{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'system_config:dashboard' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+    <a href="{% url 'system_config:staff_create' %}" class="btn btn-primary float-end">
+        <i class="bi bi-plus-circle"></i> Add Staff Member
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0"><i class="bi bi-people"></i> Staff Members</h4>
+            </div>
+            <div class="card-body">
+                {% if staff_members %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>College</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for staff in staff_members %}
+                            <tr>
+                                <td>{{ staff.get_full_name|default:staff.email }}</td>
+                                <td>{{ staff.email }}</td>
+                                <td>
+                                    {% if staff.staff_role %}
+                                        <span class="badge bg-info">{{ staff.get_staff_role_display }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">No role</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if staff.assigned_college %}
+                                        {{ staff.get_assigned_college_display }}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'system_config:staff_edit' staff.pk %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'system_config:staff_delete' staff.pk %}" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4 mb-0">No staff members yet. <a href="{% url 'system_config:staff_create' %}">Add one</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
