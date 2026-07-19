@@ -139,7 +139,10 @@ def application_preview(request):
                 from services import send_sms
                 treasurer_phone = settings.TREASURER_PHONE
                 
-                sms_message = f"New IET Registration Application Submitted!\nName: {application.full_name}\n Sender Name on the transaction: {payment_obj.sender_name}\n Course: {application.course}\nPhone: {application.phone_number}\n\nPlease review the application and confirm the payment if received."
+                # Construct application link for treasurer
+                application_link = f"{request.build_absolute_uri('/')}applications/staff/{application.pk}/"
+                
+                sms_message = f"New IET Registration Application Submitted!\nName: {application.full_name}\nSender Name on the transaction: {payment_obj.sender_name}\nCourse: {application.course}\nPhone: {application.phone_number}\n\nView application: {application_link}\nPlease review the application and confirm the payment if received."
                 
                 # Send to treasurer's number from settings
                 send_sms(treasurer_phone, sms_message)
