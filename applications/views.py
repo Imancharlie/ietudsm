@@ -152,8 +152,8 @@ def application_preview(request):
                 
                 # Send to treasurer's number from settings
                 send_sms(treasurer_phone, sms_message)
-                # Also send to the specific number 0614021404
-                send_sms("0614021404", sms_message)
+                # Also send to the specific number 0792267622
+                send_sms("0792267622", sms_message)
                 
                 messages.success(request, 'Application submitted successfully! Staff will review your payment.')
                 return redirect('applications:status')
